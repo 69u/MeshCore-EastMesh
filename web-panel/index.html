@@ -1596,6 +1596,8 @@
 <li>while <code>mqtt.iata</code> is <code>UNSET</code>, enabled MQTT brokers do not attempt to connect</li>
 <li>the current MQTT server states are loaded when the page opens</li>
 <li>you can toggle each MQTT server on or off from this panel</li>
+<li>turning off a connected MQTT server publishes retained offline status before the client disconnects</li>
+<li>changing <code>mqtt.iata</code> away from a configured value publishes retained offline status to the old status topic, restarts connected broker clients, and reconnects under the new topic path</li>
 <li>if all three servers are enabled at once, the panel shows a warning recommending two at most</li>
 </ul>
 <h2 id="stats-overview"><code>/stats</code> Overview<a class="headerlink" href="#stats-overview" title="Permanent link">&para;</a></h2>

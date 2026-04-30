@@ -837,6 +837,7 @@
 <p>It does not try to repeat the full upstream MeshCore CLI surface.</p>
 <h2 id="repeater-mqtt-commands">Repeater MQTT Commands<a class="headerlink" href="#repeater-mqtt-commands" title="Permanent link">&para;</a></h2>
 <p>These commands are available on <code>*_repeater_mqtt</code> firmware targets.</p>
+<p>No-argument <code>get</code> commands must be entered exactly as shown.</p>
 <h3 id="mqtt-status-and-routing">MQTT Status And Routing<a class="headerlink" href="#mqtt-status-and-routing" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>get mqtt.status</code>: shows WiFi, NTP, IATA, endpoint status, status publishing state, and TX state.</li>
@@ -879,6 +880,8 @@
 <li>new repeater MQTT installs default <code>mqtt.iata</code> to <code>UNSET</code></li>
 <li><code>letsmesh-eu</code> and <code>letsmesh-us</code> remain off by default unless already configured in saved prefs</li>
 <li>if <code>mqtt.iata</code> is <code>UNSET</code>, <code>eastmesh-au</code>, <code>letsmesh-eu</code>, and <code>letsmesh-us</code> will not connect even if they are toggled on</li>
+<li>turning off a connected broker publishes a retained MQTT status update with <code>"status":"offline"</code> before the client disconnects</li>
+<li>changing <code>mqtt.iata</code> away from a configured value also publishes retained offline status to the old status topic, restarts connected broker clients, and reconnects under the new topic path</li>
 </ul>
 <p>Legacy dotted aliases are also accepted:</p>
 <ul>
