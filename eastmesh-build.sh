@@ -1,9 +1,29 @@
 #!/usr/bin/env bash
 
+require_uv() {
+  if ! command -v uv >/dev/null 2>&1; then
+    echo "uv is required. Install it from https://docs.astral.sh/uv/" >&2
+    exit 1
+  fi
+}
+
+sync_python_tooling() {
+  uv sync --locked --no-group docs >/dev/null
+  uv venv --allow-existing --seed >/dev/null
+}
+
+run_python() {
+  uv run --no-sync python "$@"
+}
+
+run_pio() {
+  uv run --no-sync pio "$@"
+}
+
 global_usage() {
   cat - <<EOF
 Usage:
-sh build.sh <command> [target]
+sh eastmesh-build.sh <command> [target]
 
 Commands:
   help|usage|-h|--help: Shows this message.
@@ -12,24 +32,32 @@ Commands:
   build-firmwares: Build all firmwares for all targets.
   build-matching-firmwares <build-match-spec>: Build all firmwares for build targets containing the string given for <build-match-spec>.
   build-companion-firmwares: Build all companion firmwares for all build targets.
+  build-companion-wifi-firmwares: Build all companion WiFi firmwares for all build targets.
   build-repeater-firmwares: Build all repeater firmwares for all build targets.
+  build-repeater-mqtt-firmwares: Build all repeater MQTT firmwares for all build targets.
   build-room-server-firmwares: Build all chat room server firmwares for all build targets.
 
 Examples:
 Build firmware for the "RAK_4631_repeater" device target
-$ sh build.sh build-firmware RAK_4631_repeater
+$ sh eastmesh-build.sh build-firmware RAK_4631_repeater
 
 Build all firmwares for device targets containing the string "RAK_4631"
-$ sh build.sh build-matching-firmwares <build-match-spec>
+$ sh eastmesh-build.sh build-matching-firmwares <build-match-spec>
 
 Build all companion firmwares
-$ sh build.sh build-companion-firmwares
+$ sh eastmesh-build.sh build-companion-firmwares
+
+Build all companion WiFi firmwares
+$ sh eastmesh-build.sh build-companion-wifi-firmwares
 
 Build all repeater firmwares
-$ sh build.sh build-repeater-firmwares
+$ sh eastmesh-build.sh build-repeater-firmwares
+
+Build all repeater MQTT firmwares
+$ sh eastmesh-build.sh build-repeater-mqtt-firmwares
 
 Build all chat room server firmwares
-$ sh build.sh build-room-server-firmwares
+$ sh eastmesh-build.sh build-room-server-firmwares
 
 Environment Variables:
   DISABLE_DEBUG=1: Disables all debug logging flags (MESH_DEBUG, MESH_PACKET_LOGGING, etc.)
@@ -39,17 +67,17 @@ Examples:
 Build without debug logging:
 $ export FIRMWARE_VERSION=v1.0.0
 $ export DISABLE_DEBUG=1
-$ sh build.sh build-firmware RAK_4631_repeater
+$ sh eastmesh-build.sh build-firmware RAK_4631_repeater
 
 Build with debug logging (default, uses flags from variant files):
 $ export FIRMWARE_VERSION=v1.0.0
-$ sh build.sh build-firmware RAK_4631_repeater
+$ sh eastmesh-build.sh build-firmware RAK_4631_repeater
 EOF
 }
 
 # get a list of pio env names that start with "env:"
 get_pio_envs() {
-  pio project config | grep 'env:' | sed 's/env://'
+  run_pio project config | grep 'env:' | sed 's/env://'
 }
 
 # Catch cries for help before doing anything else.
@@ -65,7 +93,10 @@ case $1 in
 esac
 
 # cache project config json for use in get_platform_for_env()
-PIO_CONFIG_JSON=$(pio project config --json-output)
+require_uv
+sync_python_tooling
+
+PIO_CONFIG_JSON=$(run_pio project config --json-output)
 
 # $1 should be the string to find (case insensitive)
 get_pio_envs_containing_string() {
@@ -93,7 +124,7 @@ get_pio_envs_ending_with_string() {
 # $1 should be the environment name
 get_platform_for_env() {
   local env_name=$1
-  echo "$PIO_CONFIG_JSON" | python3 -c "
+  echo "$PIO_CONFIG_JSON" | run_python -c "
 import sys, json, re
 data = json.load(sys.stdin)
 for section, options in data:
@@ -115,6 +146,21 @@ disable_debug_flags() {
   fi
 }
 
+get_firmware_build_date() {
+  local env_name="$1"
+  local header="examples/simple_repeater/MyMesh.h"
+
+  if [[ "$env_name" == *companion_radio* ]]; then
+    header="examples/companion_radio/MyMesh.h"
+  elif [[ "$env_name" == *room_server* ]]; then
+    header="examples/simple_room_server/MyMesh.h"
+  elif [[ "$env_name" == *sensor* ]]; then
+    header="examples/simple_sensor/SensorMesh.h"
+  fi
+
+  sed -n 's/^[[:space:]]*#define[[:space:]][[:space:]]*FIRMWARE_BUILD_DATE[[:space:]][[:space:]]*"\([^"]*\)".*/\1/p' "$header" | head -n 1
+}
+
 # build firmware for the provided pio env in $1
 build_firmware() {
   # get env platform for post build actions
@@ -123,8 +169,12 @@ build_firmware() {
   # get git commit sha
   COMMIT_HASH=$(git rev-parse --short HEAD)
 
-  # set firmware build date
-  FIRMWARE_BUILD_DATE=$(date '+%d-%b-%Y')
+  # use the same fallback build date as direct PlatformIO builds
+  FIRMWARE_BUILD_DATE=$(get_firmware_build_date "$1")
+  if [ -z "$FIRMWARE_BUILD_DATE" ]; then
+    echo "FIRMWARE_BUILD_DATE could not be read for $1"
+    exit 1
+  fi
 
   # get FIRMWARE_VERSION, which should be provided by the environment
   if [ -z "$FIRMWARE_VERSION" ]; then
@@ -132,33 +182,41 @@ build_firmware() {
     exit 1
   fi
 
-  # set firmware version string
-  # e.g: v1.0.0-abcdef
-  FIRMWARE_VERSION_STRING="${FIRMWARE_VERSION}-${COMMIT_HASH}"
+  # set artifact version string
+  # e.g: v1.2.3-eastmesh-v1.0.1-abcdef
+  FIRMWARE_VERSION_BASE="${FIRMWARE_VERSION}"
+  if [ -n "$EASTMESH_VERSION" ]; then
+    FIRMWARE_VERSION_BASE="${FIRMWARE_VERSION_BASE}-eastmesh-${EASTMESH_VERSION}"
+  fi
+  FIRMWARE_VERSION_STRING="${FIRMWARE_VERSION_BASE}-${COMMIT_HASH}"
+  CLIENT_VERSION_STRING="eastmesh-${COMMIT_HASH}"
+  if [ -n "$EASTMESH_VERSION" ]; then
+    CLIENT_VERSION_STRING="eastmesh-${EASTMESH_VERSION}-${COMMIT_HASH}"
+  fi
 
   # craft filename
   # e.g: RAK_4631_Repeater-v1.0.0-SHA
   FIRMWARE_FILENAME="$1-${FIRMWARE_VERSION_STRING}"
 
-  # add firmware version info to end of existing platformio build flags in environment vars
-  export PLATFORMIO_BUILD_FLAGS="${PLATFORMIO_BUILD_FLAGS} -DFIRMWARE_BUILD_DATE='\"${FIRMWARE_BUILD_DATE}\"' -DFIRMWARE_VERSION='\"${FIRMWARE_VERSION_STRING}\"'"
+  # add build metadata to end of existing platformio build flags in environment vars
+  export PLATFORMIO_BUILD_FLAGS="${PLATFORMIO_BUILD_FLAGS} -DFIRMWARE_BUILD_DATE='\"${FIRMWARE_BUILD_DATE}\"' -DFIRMWARE_VERSION='\"${FIRMWARE_VERSION}\"' -DCLIENT_VERSION='\"${CLIENT_VERSION_STRING}\"'"
 
   # disable debug flags if requested
   disable_debug_flags
 
   # build firmware target
-  pio run -e $1
+  run_pio run -e $1
 
   # build merge-bin for esp32 fresh install, copy .bins to out folder (e.g: Heltec_v3_room_server-v1.0.0-SHA.bin)
   if [ "$ENV_PLATFORM" == "ESP32_PLATFORM" ]; then
-    pio run -t mergebin -e $1
+    run_pio run -t mergebin -e $1
     cp .pio/build/$1/firmware.bin out/${FIRMWARE_FILENAME}.bin 2>/dev/null || true
     cp .pio/build/$1/firmware-merged.bin out/${FIRMWARE_FILENAME}-merged.bin 2>/dev/null || true
   fi
 
   # build .uf2 for nrf52 boards, copy .uf2 and .zip to out folder (e.g: RAK_4631_Repeater-v1.0.0-SHA.uf2)
   if [ "$ENV_PLATFORM" == "NRF52_PLATFORM" ]; then
-    python3 bin/uf2conv/uf2conv.py .pio/build/$1/firmware.hex -c -o .pio/build/$1/firmware.uf2 -f 0xADA52840
+    run_python bin/uf2conv/uf2conv.py .pio/build/$1/firmware.hex -c -o .pio/build/$1/firmware.uf2 -f 0xADA52840
     cp .pio/build/$1/firmware.uf2 out/${FIRMWARE_FILENAME}.uf2 2>/dev/null || true
     cp .pio/build/$1/firmware.zip out/${FIRMWARE_FILENAME}.zip 2>/dev/null || true
   fi
@@ -228,6 +286,18 @@ build_companion_firmwares() {
 
 }
 
+build_companion_wifi_firmwares() {
+
+  build_all_firmwares_by_suffix "_companion_radio_wifi"
+
+}
+
+build_repeater_mqtt_firmwares() {
+
+  build_all_firmwares_by_suffix "_repeater_mqtt"
+
+}
+
 build_room_server_firmwares() {
 
 #  # build specific room server firmwares
@@ -271,8 +341,12 @@ elif [[ $1 == "build-firmwares" ]]; then
   build_firmwares
 elif [[ $1 == "build-companion-firmwares" ]]; then
   build_companion_firmwares
+elif [[ $1 == "build-companion-wifi-firmwares" ]]; then
+  build_companion_wifi_firmwares
 elif [[ $1 == "build-repeater-firmwares" ]]; then
   build_repeater_firmwares
+elif [[ $1 == "build-repeater-mqtt-firmwares" ]]; then
+  build_repeater_mqtt_firmwares
 elif [[ $1 == "build-room-server-firmwares" ]]; then
   build_room_server_firmwares
 fi

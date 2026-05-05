@@ -24,7 +24,7 @@ jobs:
         uses: ./.github/actions/setup-build-environment
 
       - name: Build Firmwares
-        run: /usr/bin/env bash build.sh build-companion-wifi-firmwares
+        run: /usr/bin/env bash eastmesh-build.sh build-companion-wifi-firmwares
 
       - name: Upload Workflow Artifacts
         uses: actions/upload-artifact@v7

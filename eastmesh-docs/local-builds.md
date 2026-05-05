@@ -17,7 +17,7 @@ uv sync
 List build targets:
 
 ```bash
-bash build.sh list
+bash eastmesh-build.sh list
 ```
 
 Plain PlatformIO build for a single target:
@@ -47,7 +47,7 @@ Companion WiFi:
 
 ```bash
 export FIRMWARE_VERSION=v1.14.1
-bash build.sh build-firmware heltec_v4_companion_radio_wifi
+bash eastmesh-build.sh build-firmware heltec_v4_companion_radio_wifi
 ```
 
 Repeater MQTT:
@@ -55,7 +55,7 @@ Repeater MQTT:
 ```bash
 export FIRMWARE_VERSION=v1.14.1
 export EASTMESH_VERSION=v1.0.1
-bash build.sh build-firmware heltec_v4_repeater_mqtt
+bash eastmesh-build.sh build-firmware heltec_v4_repeater_mqtt
 ```
 
 This produces versioned artifacts in `out/`.

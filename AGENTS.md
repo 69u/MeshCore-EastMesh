@@ -81,7 +81,7 @@ Do not assume `pio` is installed globally.
 List build targets:
 
 ```bash
-bash build.sh list
+bash eastmesh-build.sh list
 ```
 
 Build a single target:
@@ -98,8 +98,8 @@ Build with release-style metadata:
 ```bash
 export FIRMWARE_VERSION=v1.14.1
 export EASTMESH_VERSION=v1.0.1
-bash build.sh build-firmware heltec_v4_repeater_mqtt
-bash build.sh build-firmware T_Beam_S3_Supreme_SX1262_repeater_mqtt
+bash eastmesh-build.sh build-firmware heltec_v4_repeater_mqtt
+bash eastmesh-build.sh build-firmware T_Beam_S3_Supreme_SX1262_repeater_mqtt
 ```
 
 Flash a target:
@@ -111,7 +111,8 @@ uv run pio run -e T_Beam_S3_Supreme_SX1262_repeater_mqtt -t upload --upload-port
 
 ## Key Files
 
-- `build.sh` — build wrapper
+- `eastmesh-build.sh` — EastMesh build wrapper
+- `build.sh` — upstream MeshCore build wrapper retained for merge hygiene
 - `platformio.ini`
 - `variants/eastmesh_mqtt/platformio.ini`
 - `examples/simple_repeater/MyMesh.cpp`
