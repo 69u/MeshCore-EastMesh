@@ -553,6 +553,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#esp-now-bridge-settings-for-mqtt-bridge-repeaters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ESP-NOW Bridge Settings For MQTT Bridge Repeaters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#web-panel-controls" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -739,6 +750,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#esp-now-bridge-settings-for-mqtt-bridge-repeaters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ESP-NOW Bridge Settings For MQTT Bridge Repeaters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#web-panel-controls" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -891,13 +913,38 @@
 </ul>
 <h3 id="wifi-settings-for-mqtt-repeaters">WiFi Settings For MQTT Repeaters<a class="headerlink" href="#wifi-settings-for-mqtt-repeaters" title="Permanent link">&para;</a></h3>
 <ul>
-<li><code>get wifi.status</code>: shows SSID, connection state, raw WiFi status code, and IP when connected.</li>
+<li><code>get wifi.status</code>: shows SSID, connection state, raw WiFi status code, IP, channel, and signal when connected.</li>
 <li><code>get wifi.ssid</code>: shows the configured WiFi SSID.</li>
 <li><code>set wifi.ssid &lt;ssid&gt;</code>: sets the WiFi SSID.</li>
 <li><code>set wifi.pwd &lt;password&gt;</code>: sets the WiFi password.</li>
 <li><code>get wifi.powersaving</code>: shows the current WiFi power save mode.</li>
 <li><code>set wifi.powersaving none|min|max</code>: sets WiFi power saving mode.</li>
 </ul>
+<h3 id="esp-now-bridge-settings-for-mqtt-bridge-repeaters">ESP-NOW Bridge Settings For MQTT Bridge Repeaters<a class="headerlink" href="#esp-now-bridge-settings-for-mqtt-bridge-repeaters" title="Permanent link">&para;</a></h3>
+<p>These commands are available on <code>*_repeater_mqtt_bridge</code> firmware targets.</p>
+<ul>
+<li><code>get bridge.channel</code>: shows the configured ESP-NOW bridge channel.</li>
+<li><code>set bridge.channel &lt;channel&gt;</code>: sets the ESP-NOW bridge channel and restarts the bridge. Use a value from <code>1</code> to <code>14</code>.</li>
+<li><code>get bridge.secret</code>: shows the configured ESP-NOW bridge secret.</li>
+<li><code>set bridge.secret &lt;secret&gt;</code>: sets the shared ESP-NOW bridge secret and restarts the bridge.</li>
+</ul>
+<p>After running <code>set bridge.channel</code>, expect the bridge and web panel connection to drop briefly while the radio restarts. On current MQTT bridge test builds, this can look like the board rebooted.</p>
+<p>For <code>*_repeater_mqtt_bridge</code> builds that are connected to WiFi, the ESP-NOW bridge channel must match the active 2.4 GHz WiFi channel:</p>
+<ol>
+<li>Run <code>get wifi.status</code>.</li>
+<li>Read the <code>channel:&lt;n&gt;</code> value from the connected WiFi status.</li>
+<li>Run <code>get bridge.channel</code>.</li>
+<li>If the values differ, run <code>set bridge.channel &lt;n&gt;</code> using the WiFi channel value.</li>
+<li>Use the same <code>bridge.channel</code> and <code>bridge.secret</code> on every ESP-NOW bridge node that should talk together.</li>
+</ol>
+<p>Example:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>&gt; get wifi.status
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>&gt; ssid:EastMesh-IoT status:connected code:3 state:connected ip:192.168.1.50 channel:6 rssi:-61 quality:78% signal:good
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>&gt; get bridge.channel
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>&gt; 1
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>&gt; set bridge.channel 6
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>OK
+</span></code></pre></div>
 <h3 id="web-panel-controls">Web Panel Controls<a class="headerlink" href="#web-panel-controls" title="Permanent link">&para;</a></h3>
 <ul>
 <li><code>get web</code></li>
@@ -967,7 +1014,7 @@
 <p>wait for <code>========= CLI Rescue =========</code></p>
 </li>
 <li>
-<p><code>get wifi.status</code>: shows configured SSID, connection status, raw WiFi status code, and IP when connected.</p>
+<p><code>get wifi.status</code>: shows configured SSID, connection status, raw WiFi status code, IP, channel, and signal when connected.</p>
 </li>
 <li><code>get wifi.ssid</code>: shows the configured WiFi SSID.</li>
 <li><code>get wifi.powersaving</code>: shows the current WiFi power saving mode.</li>
