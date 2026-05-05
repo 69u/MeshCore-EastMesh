@@ -1,7 +1,9 @@
 schema_version: 1
 tracks:
   - companion-wifi
+  - repeater-bridge-espnow
   - repeater-mqtt
+  - repeater-mqtt-bridge
 generated_from: "Adjacent git tag comparisons plus non-merge commit subjects."
 
 releases:
@@ -580,4 +582,64 @@ releases:
       - type: changed
         area: build
         text: "Aligned release-style builds with direct PlatformIO builds by using the firmware source build date instead of stamping the current build day into `ver` output."
+    breaking_changes: []
+
+  - track: repeater-bridge-espnow
+    version: "1.15.0"
+    tag: "repeater-bridge-espnow-v1.15.0"
+    date: "2026-05-05"
+    previous_version: null
+    summary: "Adds a tagged release workflow for upstream-versioned repeater ESP-NOW bridge firmware artifacts."
+    changes:
+      - type: added
+        area: release
+        text: "Added the `repeater-bridge-espnow-v*` release tag format and workflow for building repeater ESP-NOW bridge firmware artifacts using the official upstream MeshCore version."
+      - type: fixed
+        area: build
+        text: "Kept pure ESP-NOW bridge targets out of the web-panel link path so they no longer fail with unresolved web service symbols."
+      - type: docs
+        area: release
+        text: "Updated release guidance to document the repeater ESP-NOW bridge tag format and versioning rule."
+    breaking_changes: []
+
+  - track: repeater-mqtt
+    version: "1.4.0"
+    tag: "repeater-mqtt-eastmesh-v1.4.0"
+    date: "2026-05-05"
+    previous_version: "1.3.15"
+    summary: "Adds bridge firmware release plumbing and hardens web-panel feature defaults so non-web bridge targets build cleanly."
+    changes:
+      - type: added
+        area: release
+        text: "Documented the expanded bridge firmware release tracks alongside the existing repeater MQTT release flow."
+      - type: fixed
+        area: web-panel
+        text: "Scoped the default web-panel enablement to MQTT uplink builds so non-web ESP32 bridge targets do not compile calls to web services that are not linked."
+      - type: changed
+        area: build
+        text: "Tightened EastMesh build target discovery so generated `${env:...}` references are not mistaken for PlatformIO environments."
+    breaking_changes: []
+
+  - track: repeater-mqtt-bridge
+    version: "1.4.0"
+    tag: "repeater-mqtt-bridge-eastmesh-v1.4.0"
+    date: "2026-05-05"
+    previous_version: null
+    summary: "First EastMesh repeater MQTT bridge release track, combining MQTT uplink builds with ESP-NOW bridge firmware artifacts."
+    changes:
+      - type: added
+        area: build
+        text: "Added `*_repeater_mqtt_bridge` build coverage for EastMesh MQTT repeater targets."
+      - type: added
+        area: release
+        text: "Added the `repeater-mqtt-bridge-eastmesh-v*` release tag format and draft-release workflow for MQTT bridge firmware artifacts."
+      - type: added
+        area: cli
+        text: "Exposed the active Wi-Fi channel in `get wifi.status` so MQTT bridge operators can align `bridge.channel` with the connected 2.4 GHz Wi-Fi channel."
+      - type: docs
+        area: cli
+        text: "Added MQTT bridge CLI guidance for `get/set bridge.channel`, `get/set bridge.secret`, and channel alignment with `get wifi.status`."
+      - type: fixed
+        area: web-panel
+        text: "Kept the web service suspended during OTA start so the Start OTA path does not tear down the panel while OTA is taking over port `80`."
     breaking_changes: []
