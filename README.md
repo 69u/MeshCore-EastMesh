@@ -75,7 +75,7 @@ uv sync
 List available build targets:
 
 ```bash
-bash build.sh list
+bash eastmesh-build.sh list
 ```
 
 Build a single target:
@@ -90,7 +90,7 @@ Build with release-style version metadata:
 ```bash
 export FIRMWARE_VERSION=v1.14.1
 export EASTMESH_VERSION=v1.0.1
-bash build.sh build-firmware heltec_v4_repeater_mqtt
+bash eastmesh-build.sh build-firmware heltec_v4_repeater_mqtt
 ```
 
 Flash a target:
@@ -114,9 +114,11 @@ uv run --group docs zensical build
 
 ## Key Files
 
-- [`build.sh`](./build.sh)
-  - main local build wrapper
+- [`eastmesh-build.sh`](./eastmesh-build.sh)
+  - EastMesh local/release build wrapper
   - injects `FIRMWARE_VERSION`, `CLIENT_VERSION`, and EastMesh release metadata
+- [`build.sh`](./build.sh)
+  - upstream MeshCore build wrapper retained to reduce future merge conflicts
 - [`pyproject.toml`](./pyproject.toml)
   - Python tooling and docs dependencies
 - [`platformio.ini`](./platformio.ini)

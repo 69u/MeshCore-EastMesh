@@ -81,7 +81,7 @@ Do not assume `pio` is installed globally.
 List build targets:
 
 ```bash
-bash build.sh list
+bash eastmesh-build.sh list
 ```
 
 Build a single target:
@@ -98,8 +98,8 @@ Build with release-style metadata:
 ```bash
 export FIRMWARE_VERSION=v1.14.1
 export EASTMESH_VERSION=v1.0.1
-bash build.sh build-firmware heltec_v4_repeater_mqtt
-bash build.sh build-firmware T_Beam_S3_Supreme_SX1262_repeater_mqtt
+bash eastmesh-build.sh build-firmware heltec_v4_repeater_mqtt
+bash eastmesh-build.sh build-firmware T_Beam_S3_Supreme_SX1262_repeater_mqtt
 ```
 
 Flash a target:
@@ -111,7 +111,8 @@ uv run pio run -e T_Beam_S3_Supreme_SX1262_repeater_mqtt -t upload --upload-port
 
 ## Key Files
 
-- `build.sh` — build wrapper
+- `eastmesh-build.sh` — EastMesh build wrapper
+- `build.sh` — upstream MeshCore build wrapper retained for merge hygiene
 - `platformio.ini`
 - `variants/eastmesh_mqtt/platformio.ini`
 - `examples/simple_repeater/MyMesh.cpp`
@@ -169,14 +170,18 @@ Current tag formats:
 
 ```bash
 git tag companion-wifi-v1.2.3
+git tag repeater-bridge-espnow-v1.2.3
+git tag repeater-mqtt-bridge-eastmesh-v1.0.1
 git tag repeater-mqtt-eastmesh-v1.0.1
 ```
 
 Rules:
 
 - `companion-wifi` tags use the upstream MeshCore version directly
+- `repeater-bridge-espnow` tags use the upstream MeshCore version directly
+- `repeater-mqtt-bridge` tags use the EastMesh release version in the tag
 - `repeater-mqtt` tags use the EastMesh release version in the tag
-- GitHub Actions variable `OFFICIAL_MESHCORE_VERSION` supplies the upstream base version for repeater MQTT release builds
+- GitHub Actions variable `OFFICIAL_MESHCORE_VERSION` supplies the upstream base version for repeater MQTT and repeater MQTT bridge release builds
 - if the upstream MeshCore release version changes, update `OFFICIAL_MESHCORE_VERSION` in GitHub before cutting release tags
 
 Typical release flow:
