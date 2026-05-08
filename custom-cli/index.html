@@ -486,6 +486,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#start-here" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Start Here
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#repeater-mqtt-commands" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -542,10 +553,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#wifi-settings-for-mqtt-repeaters" class="md-nav__link">
+  <a href="#wi-fi-settings-for-mqtt-repeaters" class="md-nav__link">
     <span class="md-ellipsis">
       
-        WiFi Settings For MQTT Repeaters
+        Wi-Fi Settings For MQTT Repeaters
       
     </span>
   </a>
@@ -624,10 +635,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#companion-wifi-rescue-commands" class="md-nav__link">
+  <a href="#companion-wi-fi-rescue-commands" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Companion WiFi Rescue Commands
+        Companion Wi-Fi Rescue Commands
       
     </span>
   </a>
@@ -683,6 +694,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#start-here" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Start Here
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#repeater-mqtt-commands" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -739,10 +761,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#wifi-settings-for-mqtt-repeaters" class="md-nav__link">
+  <a href="#wi-fi-settings-for-mqtt-repeaters" class="md-nav__link">
     <span class="md-ellipsis">
       
-        WiFi Settings For MQTT Repeaters
+        Wi-Fi Settings For MQTT Repeaters
       
     </span>
   </a>
@@ -821,10 +843,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#companion-wifi-rescue-commands" class="md-nav__link">
+  <a href="#companion-wi-fi-rescue-commands" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Companion WiFi Rescue Commands
+        Companion Wi-Fi Rescue Commands
       
     </span>
   </a>
@@ -857,12 +879,26 @@
 <h1 id="custom-cli-commands">Custom CLI Commands<a class="headerlink" href="#custom-cli-commands" title="Permanent link">&para;</a></h1>
 <p>This page covers the EastMesh-specific CLI commands added in this repository.</p>
 <p>It does not try to repeat the full upstream MeshCore CLI surface.</p>
+<h2 id="start-here">Start Here<a class="headerlink" href="#start-here" title="Permanent link">&para;</a></h2>
+<p>If you are doing first-time setup, these are the commands most users need before anything else:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>set wifi.ssid &lt;your-ssid&gt;
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>set wifi.pwd &lt;your-password&gt;
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>get wifi.status
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>set mqtt.iata &lt;code&gt;
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>get mqtt.status
+</span></code></pre></div>
+<p>For MQTT repeaters with the local web panel, these are also useful:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>set web on
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>get web.status
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>set web off
+</span></code></pre></div>
+<p>Use <code>set web on</code> while setting up or troubleshooting, then use <code>set web off</code> when a fixed MQTT repeater needs maximum memory headroom.</p>
 <h2 id="repeater-mqtt-commands">Repeater MQTT Commands<a class="headerlink" href="#repeater-mqtt-commands" title="Permanent link">&para;</a></h2>
 <p>These commands are available on <code>*_repeater_mqtt</code> firmware targets.</p>
 <p>No-argument <code>get</code> commands must be entered exactly as shown.</p>
 <h3 id="mqtt-status-and-routing">MQTT Status And Routing<a class="headerlink" href="#mqtt-status-and-routing" title="Permanent link">&para;</a></h3>
 <ul>
-<li><code>get mqtt.status</code>: shows WiFi, NTP, IATA, endpoint status, status publishing state, and TX state.</li>
+<li><code>get mqtt.status</code>: shows Wi-Fi, NTP, IATA, endpoint status, status publishing state, and TX state.</li>
 <li><code>get mqtt.statuscfg</code>: shows whether periodic status messages are enabled as a simple <code>on</code> or <code>off</code> value. Most users can just use <code>get mqtt.status</code>.</li>
 <li><code>get mqtt.client_version</code>: shows the MQTT <code>client_version</code> string published by the repeater.</li>
 <li><code>get mqtt.iata</code>: shows the IATA/location code used in MQTT topics.</li>
@@ -911,17 +947,18 @@
 <li><code>mqtt.letsmesh.eu</code></li>
 <li><code>mqtt.letsmesh.us</code></li>
 </ul>
-<h3 id="wifi-settings-for-mqtt-repeaters">WiFi Settings For MQTT Repeaters<a class="headerlink" href="#wifi-settings-for-mqtt-repeaters" title="Permanent link">&para;</a></h3>
+<h3 id="wi-fi-settings-for-mqtt-repeaters">Wi-Fi Settings For MQTT Repeaters<a class="headerlink" href="#wi-fi-settings-for-mqtt-repeaters" title="Permanent link">&para;</a></h3>
 <ul>
-<li><code>get wifi.status</code>: shows SSID, connection state, raw WiFi status code, IP, channel, and signal when connected.</li>
-<li><code>get wifi.ssid</code>: shows the configured WiFi SSID.</li>
-<li><code>set wifi.ssid &lt;ssid&gt;</code>: sets the WiFi SSID.</li>
-<li><code>set wifi.pwd &lt;password&gt;</code>: sets the WiFi password.</li>
-<li><code>get wifi.powersaving</code>: shows the current WiFi power save mode.</li>
-<li><code>set wifi.powersaving none|min|max</code>: sets WiFi power saving mode.</li>
+<li><code>get wifi.status</code>: shows SSID, connection state, raw Wi-Fi status code, IP, channel, and signal when connected.</li>
+<li><code>get wifi.ssid</code>: shows the configured Wi-Fi SSID.</li>
+<li><code>set wifi.ssid &lt;ssid&gt;</code>: sets the Wi-Fi SSID.</li>
+<li><code>set wifi.pwd &lt;password&gt;</code>: sets the Wi-Fi password.</li>
+<li><code>get wifi.powersaving</code>: shows the current Wi-Fi power save mode.</li>
+<li><code>set wifi.powersaving none|min|max</code>: sets Wi-Fi power saving mode.</li>
 </ul>
 <h3 id="esp-now-bridge-settings-for-mqtt-bridge-repeaters">ESP-NOW Bridge Settings For MQTT Bridge Repeaters<a class="headerlink" href="#esp-now-bridge-settings-for-mqtt-bridge-repeaters" title="Permanent link">&para;</a></h3>
 <p>These commands are available on <code>*_repeater_mqtt_bridge</code> firmware targets.</p>
+<p>Bridge commands are for local ESP-NOW bridge use between nearby repeaters, such as linking repeaters on <code>Australia (Narrow)</code> and <code>Australia (Mid)</code>. They are not MQTT-over-WAN, VPN, or internet bridge controls.</p>
 <ul>
 <li><code>get bridge.channel</code>: shows the configured ESP-NOW bridge channel.</li>
 <li><code>set bridge.channel &lt;channel&gt;</code>: sets the ESP-NOW bridge channel and restarts the bridge. Use a value from <code>1</code> to <code>14</code>.</li>
@@ -929,21 +966,21 @@
 <li><code>set bridge.secret &lt;secret&gt;</code>: sets the shared ESP-NOW bridge secret and restarts the bridge.</li>
 </ul>
 <p>After running <code>set bridge.channel</code>, expect the bridge and web panel connection to drop briefly while the radio restarts. On current MQTT bridge test builds, this can look like the board rebooted.</p>
-<p>For <code>*_repeater_mqtt_bridge</code> builds that are connected to WiFi, the ESP-NOW bridge channel must match the active 2.4 GHz WiFi channel:</p>
+<p>For <code>*_repeater_mqtt_bridge</code> builds that are connected to Wi-Fi, the ESP-NOW bridge channel must match the active 2.4 GHz Wi-Fi channel:</p>
 <ol>
 <li>Run <code>get wifi.status</code>.</li>
-<li>Read the <code>channel:&lt;n&gt;</code> value from the connected WiFi status.</li>
+<li>Read the <code>channel:&lt;n&gt;</code> value from the connected Wi-Fi status.</li>
 <li>Run <code>get bridge.channel</code>.</li>
-<li>If the values differ, run <code>set bridge.channel &lt;n&gt;</code> using the WiFi channel value.</li>
+<li>If the values differ, run <code>set bridge.channel &lt;n&gt;</code> using the Wi-Fi channel value.</li>
 <li>Use the same <code>bridge.channel</code> and <code>bridge.secret</code> on every ESP-NOW bridge node that should talk together.</li>
 </ol>
 <p>Example:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>&gt; get wifi.status
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>&gt; ssid:EastMesh-IoT status:connected code:3 state:connected ip:192.168.1.50 channel:6 rssi:-61 quality:78% signal:good
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>&gt; get bridge.channel
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>&gt; 1
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>&gt; set bridge.channel 6
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>OK
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&gt; get wifi.status
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>&gt; ssid:EastMesh-IoT status:connected code:3 state:connected ip:192.168.1.50 channel:6 rssi:-61 quality:78% signal:good
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>&gt; get bridge.channel
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>&gt; 1
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>&gt; set bridge.channel 6
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>OK
 </span></code></pre></div>
 <h3 id="web-panel-controls">Web Panel Controls<a class="headerlink" href="#web-panel-controls" title="Permanent link">&para;</a></h3>
 <ul>
@@ -978,7 +1015,7 @@
 <li><code>set fan off</code>: forces the fan off and persists that mode across reboot.</li>
 <li><code>set fan timeout &lt;Ns&gt;</code>: changes the automatic post-TX hold window in seconds and persists it across reboot, for example <code>set fan timeout 45s</code>.</li>
 </ul>
-<p>Auto mode behavior:</p>
+<p>Auto mode behaviour:</p>
 <ul>
 <li>forces the fan on during TX and keeps it on for the configured timeout afterward</li>
 <li>otherwise turns the fan on at <code>48C</code></li>
@@ -1003,7 +1040,7 @@
 <li><code>start ota</code> releases the local HTTP redirect listener on port <code>80</code> so the OTA HTTP listener can take over without stopping the rest of the repeater services, regardless of whether the command is run from the web panel, serial CLI, or a remote companion/app CLI session</li>
 <li>the <code>/app</code> Regions shortcut runs the existing MeshCore region commands in sequence: <code>region put au</code>, <code>region put au-STATE</code>, <code>region allowf au</code>, <code>region allowf au-STATE</code>, then <code>region save</code></li>
 </ul>
-<h2 id="companion-wifi-rescue-commands">Companion WiFi Rescue Commands<a class="headerlink" href="#companion-wifi-rescue-commands" title="Permanent link">&para;</a></h2>
+<h2 id="companion-wi-fi-rescue-commands">Companion Wi-Fi Rescue Commands<a class="headerlink" href="#companion-wi-fi-rescue-commands" title="Permanent link">&para;</a></h2>
 <p>These commands are available in the serial rescue CLI for <code>*_companion_radio_wifi</code> builds.</p>
 <p>To enter <code>CLI Rescue</code>:</p>
 <ul>
@@ -1014,15 +1051,15 @@
 <p>wait for <code>========= CLI Rescue =========</code></p>
 </li>
 <li>
-<p><code>get wifi.status</code>: shows configured SSID, connection status, raw WiFi status code, IP, channel, and signal when connected.</p>
+<p><code>get wifi.status</code>: shows configured SSID, connection status, raw Wi-Fi status code, IP, channel, and signal when connected.</p>
 </li>
-<li><code>get wifi.ssid</code>: shows the configured WiFi SSID.</li>
-<li><code>get wifi.powersaving</code>: shows the current WiFi power saving mode.</li>
-<li><code>set wifi.ssid &lt;ssid&gt;</code>: saves a WiFi SSID and immediately retries connection.</li>
-<li><code>set wifi.pwd &lt;password&gt;</code>: saves a WiFi password and immediately retries connection.</li>
-<li><code>set wifi.powersaving none|min|max</code>: changes the WiFi power save mode.</li>
+<li><code>get wifi.ssid</code>: shows the configured Wi-Fi SSID.</li>
+<li><code>get wifi.powersaving</code>: shows the current Wi-Fi power saving mode.</li>
+<li><code>set wifi.ssid &lt;ssid&gt;</code>: saves a Wi-Fi SSID and immediately retries connection.</li>
+<li><code>set wifi.pwd &lt;password&gt;</code>: saves a Wi-Fi password and immediately retries connection.</li>
+<li><code>set wifi.powersaving none|min|max</code>: changes the Wi-Fi power save mode.</li>
 </ul>
-<p>Companion WiFi builds also still support the existing rescue commands such as:</p>
+<p>Companion Wi-Fi builds also still support the existing rescue commands such as:</p>
 <ul>
 <li><code>set pin &lt;6-digit-pin&gt;</code></li>
 <li><code>rebuild</code></li>

@@ -380,6 +380,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#quick-answer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Answer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#before-you-start" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -646,6 +657,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#quick-answer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Answer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#before-you-start" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -792,12 +814,16 @@
 <ul>
 <li><a href=".././releases/">Download and Flash Releases</a></li>
 </ul>
+<h2 id="quick-answer">Quick Answer<a class="headerlink" href="#quick-answer" title="Permanent link">&para;</a></h2>
+<p>Try a normal firmware flash first, without erasing the device. After flashing, re-enter the current EastMesh Wi-Fi and MQTT settings listed below.</p>
+<p>Only do a full erase-flash if the repeater still behaves strangely after reflashing, reapplying settings, and rebooting.</p>
 <h2 id="before-you-start">Before You Start<a class="headerlink" href="#before-you-start" title="Permanent link">&para;</a></h2>
 <ul>
 <li>you can flash the new firmware without erasing first</li>
 <li>after flashing, you will need to reapply your Wi-Fi and some MQTT settings</li>
 <li>you can do this either from the serial CLI or from the companion app</li>
 </ul>
+<p>Older MQTT bridge settings from <code>xJARiD/MeshCore</code> do not migrate into the current EastMesh MQTT uplink settings. Re-enter the settings you still use now instead of expecting older broker/analyzer values to carry forward.</p>
 <h2 id="required-setup-after-flashing">Required Setup After Flashing<a class="headerlink" href="#required-setup-after-flashing" title="Permanent link">&para;</a></h2>
 <p>Once the new firmware is flashed, set:</p>
 <ul>

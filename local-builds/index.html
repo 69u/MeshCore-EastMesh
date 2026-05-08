@@ -505,6 +505,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#supported-bridge-boards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Supported Bridge Boards
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#supported-companion_radio_wifi-boards" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -516,10 +527,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#companion-wifi-cli" class="md-nav__link">
+  <a href="#companion-wi-fi-cli" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Companion WiFi CLI
+        Companion Wi-Fi CLI
       
     </span>
   </a>
@@ -646,6 +657,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#supported-bridge-boards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Supported Bridge Boards
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#supported-companion_radio_wifi-boards" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -657,10 +679,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#companion-wifi-cli" class="md-nav__link">
+  <a href="#companion-wi-fi-cli" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Companion WiFi CLI
+        Companion Wi-Fi CLI
       
     </span>
   </a>
@@ -693,6 +715,7 @@
 <h1 id="build-locally-with-uv">Build Locally With uv<a class="headerlink" href="#build-locally-with-uv" title="Permanent link">&para;</a></h1>
 <p>This repo uses <code>uv</code> for Python tooling and runs PlatformIO through <code>uv run</code>.</p>
 <p>This page is for building from source. If you just want firmware to flash, start with <a href=".././releases/">Download and Flash Releases</a> instead.</p>
+<p>Use this page when you are changing firmware, testing a target before release, or building a local artifact that is not available from GitHub Releases.</p>
 <h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">&para;</a></h2>
 <p>From the repo root:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>uv<span class="w"> </span>sync
@@ -704,6 +727,8 @@
 <p>Plain PlatformIO build for a single target:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>uv<span class="w"> </span>run<span class="w"> </span>pio<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span>heltec_v4_repeater_mqtt
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>uv<span class="w"> </span>run<span class="w"> </span>pio<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span>heltec_v4_companion_radio_wifi
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>uv<span class="w"> </span>run<span class="w"> </span>pio<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span>heltec_v4_repeater_bridge_espnow
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>uv<span class="w"> </span>run<span class="w"> </span>pio<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span>heltec_v4_repeater_mqtt_bridge
 </span></code></pre></div>
 <p>Flash a target:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>uv<span class="w"> </span>run<span class="w"> </span>pio<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span>heltec_v4_repeater_mqtt<span class="w"> </span>-t<span class="w"> </span>upload<span class="w"> </span>--upload-port<span class="w"> </span>/dev/tty.usbmodemXXXX
@@ -713,7 +738,7 @@
 </span></code></pre></div>
 <h2 id="release-style-local-builds">Release-Style Local Builds<a class="headerlink" href="#release-style-local-builds" title="Permanent link">&para;</a></h2>
 <p>If you want the same version metadata used by the release workflows, export the version variables first.</p>
-<p>Companion WiFi:</p>
+<p>Companion Wi-Fi:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">FIRMWARE_VERSION</span><span class="o">=</span>v1.14.1
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>bash<span class="w"> </span>eastmesh-build.sh<span class="w"> </span>build-firmware<span class="w"> </span>heltec_v4_companion_radio_wifi
 </span></code></pre></div>
@@ -722,75 +747,103 @@
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">EASTMESH_VERSION</span><span class="o">=</span>v1.0.1
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>bash<span class="w"> </span>eastmesh-build.sh<span class="w"> </span>build-firmware<span class="w"> </span>heltec_v4_repeater_mqtt
 </span></code></pre></div>
+<p>Repeater ESP-NOW bridge:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">FIRMWARE_VERSION</span><span class="o">=</span>v1.15.0
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>bash<span class="w"> </span>eastmesh-build.sh<span class="w"> </span>build-firmware<span class="w"> </span>heltec_v4_repeater_bridge_espnow
+</span></code></pre></div>
+<p>Repeater MQTT bridge:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">FIRMWARE_VERSION</span><span class="o">=</span>v1.15.0
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">EASTMESH_VERSION</span><span class="o">=</span>v1.4.0
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>bash<span class="w"> </span>eastmesh-build.sh<span class="w"> </span>build-firmware<span class="w"> </span>heltec_v4_repeater_mqtt_bridge
+</span></code></pre></div>
 <p>This produces versioned artifacts in <code>out/</code>.</p>
+<p>Versioning rule:</p>
+<ul>
+<li><code>companion-wifi</code> and <code>repeater-bridge-espnow</code> use the upstream MeshCore version as <code>FIRMWARE_VERSION</code></li>
+<li><code>repeater-mqtt</code> and <code>repeater-mqtt-bridge</code> use the upstream MeshCore version as <code>FIRMWARE_VERSION</code> plus the EastMesh release version as <code>EASTMESH_VERSION</code></li>
+</ul>
 <h2 id="supported-repeater_mqtt-boards">Supported <code>repeater_mqtt</code> Boards<a class="headerlink" href="#supported-repeater_mqtt-boards" title="Permanent link">&para;</a></h2>
 <p>These are the full PlatformIO env names used for local source builds and release artifact naming.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Generic_E22_sx1262_repeater_mqtt
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>Generic_E22_sx1268_repeater_mqtt
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>Heltec_E213_repeater_mqtt
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>Heltec_E290_repeater_mqtt
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>Heltec_T190_repeater_mqtt
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>heltec_tracker_v2_repeater_mqtt
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>Heltec_v2_repeater_mqtt
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>Heltec_v3_repeater_mqtt
-</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>heltec_v4_repeater_mqtt
-</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>heltec_v4_tft_repeater_mqtt
-</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>Heltec_Wireless_Paper_repeater_mqtt
-</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>Heltec_Wireless_Tracker_repeater_mqtt
-</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>Heltec_WSL3_repeater_mqtt
-</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>LilyGo_T3S3_sx1262_repeater_mqtt
-</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>LilyGo_T3S3_sx1276_repeater_mqtt
-</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>LilyGo_TBeam_1W_repeater_mqtt
-</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>LilyGo_TDeck_repeater_mqtt
-</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>LilyGo_Tlora_C6_repeater_mqtt
-</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>M5Stack_Unit_C6L_repeater_mqtt
-</span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>Meshadventurer_sx1262_repeater_mqtt
-</span><span id="__span-7-21"><a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a>Meshadventurer_sx1268_repeater_mqtt
-</span><span id="__span-7-22"><a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a>Meshimi_repeater_mqtt
-</span><span id="__span-7-23"><a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a>nibble_screen_connect_repeater_mqtt
-</span><span id="__span-7-24"><a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a>RAK_3112_repeater_mqtt
-</span><span id="__span-7-25"><a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a>Station_G2_logging_repeater_mqtt
-</span><span id="__span-7-26"><a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a>Station_G2_repeater_mqtt
-</span><span id="__span-7-27"><a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a>T_Beam_S3_Supreme_SX1262_repeater_mqtt
-</span><span id="__span-7-28"><a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a>Tbeam_SX1262_repeater_mqtt
-</span><span id="__span-7-29"><a id="__codelineno-7-29" name="__codelineno-7-29" href="#__codelineno-7-29"></a>Tbeam_SX1276_repeater_mqtt
-</span><span id="__span-7-30"><a id="__codelineno-7-30" name="__codelineno-7-30" href="#__codelineno-7-30"></a>WHY2025_badge_repeater_mqtt
-</span><span id="__span-7-31"><a id="__codelineno-7-31" name="__codelineno-7-31" href="#__codelineno-7-31"></a>Xiao_C6_repeater_mqtt
-</span><span id="__span-7-32"><a id="__codelineno-7-32" name="__codelineno-7-32" href="#__codelineno-7-32"></a>Xiao_S3_WIO_repeater_mqtt
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>Generic_E22_sx1262_repeater_mqtt
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>Generic_E22_sx1268_repeater_mqtt
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>Heltec_E213_repeater_mqtt
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>Heltec_E290_repeater_mqtt
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>Heltec_T190_repeater_mqtt
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>heltec_tracker_v2_repeater_mqtt
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>Heltec_v2_repeater_mqtt
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>Heltec_v3_repeater_mqtt
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>heltec_v4_repeater_mqtt
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>heltec_v4_tft_repeater_mqtt
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>Heltec_Wireless_Paper_repeater_mqtt
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>Heltec_Wireless_Tracker_repeater_mqtt
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>Heltec_WSL3_repeater_mqtt
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>LilyGo_T3S3_sx1262_repeater_mqtt
+</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>LilyGo_T3S3_sx1276_repeater_mqtt
+</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>LilyGo_TBeam_1W_repeater_mqtt
+</span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a>LilyGo_TDeck_repeater_mqtt
+</span><span id="__span-9-18"><a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a>LilyGo_Tlora_C6_repeater_mqtt
+</span><span id="__span-9-19"><a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a>M5Stack_Unit_C6L_repeater_mqtt
+</span><span id="__span-9-20"><a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a>Meshadventurer_sx1262_repeater_mqtt
+</span><span id="__span-9-21"><a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a>Meshadventurer_sx1268_repeater_mqtt
+</span><span id="__span-9-22"><a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a>Meshimi_repeater_mqtt
+</span><span id="__span-9-23"><a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a>nibble_screen_connect_repeater_mqtt
+</span><span id="__span-9-24"><a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a>RAK_3112_repeater_mqtt
+</span><span id="__span-9-25"><a id="__codelineno-9-25" name="__codelineno-9-25" href="#__codelineno-9-25"></a>Station_G2_logging_repeater_mqtt
+</span><span id="__span-9-26"><a id="__codelineno-9-26" name="__codelineno-9-26" href="#__codelineno-9-26"></a>Station_G2_repeater_mqtt
+</span><span id="__span-9-27"><a id="__codelineno-9-27" name="__codelineno-9-27" href="#__codelineno-9-27"></a>T_Beam_S3_Supreme_SX1262_repeater_mqtt
+</span><span id="__span-9-28"><a id="__codelineno-9-28" name="__codelineno-9-28" href="#__codelineno-9-28"></a>Tbeam_SX1262_repeater_mqtt
+</span><span id="__span-9-29"><a id="__codelineno-9-29" name="__codelineno-9-29" href="#__codelineno-9-29"></a>Tbeam_SX1276_repeater_mqtt
+</span><span id="__span-9-30"><a id="__codelineno-9-30" name="__codelineno-9-30" href="#__codelineno-9-30"></a>WHY2025_badge_repeater_mqtt
+</span><span id="__span-9-31"><a id="__codelineno-9-31" name="__codelineno-9-31" href="#__codelineno-9-31"></a>Xiao_C6_repeater_mqtt
+</span><span id="__span-9-32"><a id="__codelineno-9-32" name="__codelineno-9-32" href="#__codelineno-9-32"></a>Xiao_S3_WIO_repeater_mqtt
 </span></code></pre></div>
+<h2 id="supported-bridge-boards">Supported Bridge Boards<a class="headerlink" href="#supported-bridge-boards" title="Permanent link">&para;</a></h2>
+<p>Bridge targets can be listed from the repo root:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>bash<span class="w"> </span>eastmesh-build.sh<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s1">&#39;_repeater_bridge_espnow&#39;</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>bash<span class="w"> </span>eastmesh-build.sh<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s1">&#39;_repeater_mqtt_bridge&#39;</span>
+</span></code></pre></div>
+<p>Common examples:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>heltec_v4_repeater_bridge_espnow
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>heltec_v4_repeater_mqtt_bridge
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>Station_G2_repeater_bridge_espnow
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>Station_G2_repeater_mqtt_bridge
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>T_Beam_S3_Supreme_SX1262_repeater_bridge_espnow
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>T_Beam_S3_Supreme_SX1262_repeater_mqtt_bridge
+</span></code></pre></div>
+<p>Bridge firmware is for local ESP-NOW bridge use between nearby repeaters. It is not MQTT-over-WAN or VPN bridging.</p>
 <h2 id="supported-companion_radio_wifi-boards">Supported <code>companion_radio_wifi</code> Boards<a class="headerlink" href="#supported-companion_radio_wifi-boards" title="Permanent link">&para;</a></h2>
 <p>These are the full PlatformIO env names used for local source builds and release artifact naming.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>heltec_tracker_v2_companion_radio_wifi
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>Heltec_v2_companion_radio_wifi
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>Heltec_v3_companion_radio_wifi
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>heltec_v4_companion_radio_wifi
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>heltec_v4_tft_companion_radio_wifi
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>Heltec_WSL3_companion_radio_wifi
-</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>LilyGo_TBeam_1W_companion_radio_wifi
-</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>LilyGo_TLora_V2_1_1_6_companion_radio_wifi
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>nibble_screen_connect_companion_radio_wifi
-</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>RAK_3112_companion_radio_wifi
-</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>Station_G2_companion_radio_wifi
-</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>T_Beam_S3_Supreme_SX1262_companion_radio_wifi
-</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>ThinkNode_M2_companion_radio_wifi
-</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>ThinkNode_M5_companion_radio_wifi
-</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>Xiao_S3_WIO_companion_radio_wifi
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>heltec_tracker_v2_companion_radio_wifi
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>Heltec_v2_companion_radio_wifi
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>Heltec_v3_companion_radio_wifi
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>heltec_v4_companion_radio_wifi
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>heltec_v4_tft_companion_radio_wifi
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>Heltec_WSL3_companion_radio_wifi
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>LilyGo_TBeam_1W_companion_radio_wifi
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>LilyGo_TLora_V2_1_1_6_companion_radio_wifi
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>nibble_screen_connect_companion_radio_wifi
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>RAK_3112_companion_radio_wifi
+</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>Station_G2_companion_radio_wifi
+</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>T_Beam_S3_Supreme_SX1262_companion_radio_wifi
+</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>ThinkNode_M2_companion_radio_wifi
+</span><span id="__span-12-14"><a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>ThinkNode_M5_companion_radio_wifi
+</span><span id="__span-12-15"><a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>Xiao_S3_WIO_companion_radio_wifi
 </span></code></pre></div>
-<h2 id="companion-wifi-cli">Companion WiFi CLI<a class="headerlink" href="#companion-wifi-cli" title="Permanent link">&para;</a></h2>
-<p>Current companion WiFi builds support persisted WiFi rescue commands:</p>
+<h2 id="companion-wi-fi-cli">Companion Wi-Fi CLI<a class="headerlink" href="#companion-wi-fi-cli" title="Permanent link">&para;</a></h2>
+<p>Current companion Wi-Fi builds support persisted Wi-Fi rescue commands:</p>
 <ul>
 <li>open a serial monitor at <code>115200</code> baud</li>
 <li>reboot the device</li>
 <li>long-press the user button within the first 8 seconds after boot to enter <code>CLI Rescue</code></li>
 <li>wait for <code>========= CLI Rescue =========</code></li>
-<li>then run the WiFi rescue commands below from the serial monitor</li>
+<li>then run the Wi-Fi rescue commands below from the serial monitor</li>
 </ul>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>get wifi.status
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>get wifi.ssid
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>get wifi.powersaving
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>set wifi.ssid &lt;ssid&gt;
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>set wifi.pwd &lt;password&gt;
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>set wifi.powersaving none|min|max
+<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>get wifi.status
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>get wifi.ssid
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>get wifi.powersaving
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>set wifi.ssid &lt;ssid&gt;
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>set wifi.pwd &lt;password&gt;
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>set wifi.powersaving none|min|max
 </span></code></pre></div>
 
 
