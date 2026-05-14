@@ -311,6 +311,8 @@ When `web.stats` is enabled, stats history starts capturing from boot or from th
 
 Archive-backed restore requires `web.stats` enabled plus a mounted SD card on boards that support the EastMesh archive path.
 
+If archive access drops at runtime, the repeater retries the SD mount periodically while `web.stats` remains enabled.
+
 The main purpose of the SD card is to let the repeater retain and restore stats history for `/stats`. The archive keeps fast `.latest` snapshot files for quick restore and UTC-dated daily `.log` files for longer-term history. As a secondary option, those files can also be removed and inspected on a computer for deeper manual review.
 
 On no-PSRAM boards, `/stats` can still show recent graphs, but the history is smaller and does not provide the same archive-backed behaviour as PSRAM-capable boards.

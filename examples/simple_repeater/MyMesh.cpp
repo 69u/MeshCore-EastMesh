@@ -188,6 +188,7 @@ bool appendJsonFloatField(char* reply, size_t reply_size, size_t& offset, bool& 
 }
 
 constexpr unsigned long kArchiveNeighboursFlushIntervalMs = 60UL * 1000UL;
+constexpr unsigned long kArchiveRecoveryRetryIntervalMs = 5UL * 60UL * 1000UL;
 constexpr const char* kArchiveNeighboursSnapshotPath = "/stats/neighbours.snapshot";
 constexpr const char* kArchiveNeighboursLatestPath = "/stats/neighbours.latest";
 
@@ -1201,6 +1202,7 @@ MyMesh::MyMesh(mesh::MainBoard &board, mesh::Radio &radio, mesh::MillisecondCloc
   _archive = nullptr;
   uptime_millis = 0;
   next_archive_neighbours_flush_ms = 0;
+  next_archive_recover_ms = 0;
   next_battery_sample_ms = 0;
   next_history_sample_ms = 0;
   next_local_advert = next_flood_advert = 0;
@@ -1789,9 +1791,11 @@ void MyMesh::updateStatsHistory(unsigned long now_ms) {
   if (!_stats_history.isEnabled()) {
     _stats_state.initialized = false;
     _archive_neighbours_dirty = false;
+    next_archive_recover_ms = 0;
     return;
   }
   _stats_history.maybeReleaseIdleBuffers(now_ms);
+  maybeRecoverArchive(now_ms);
 
   const bool wifi_connected = network.isWifiConnected();
 #ifdef WITH_MQTT_UPLINK
@@ -1970,9 +1974,29 @@ void MyMesh::updateStatsHistory(unsigned long now_ms) {
   }
 
   _stats_history.maybeFlush(now_ms);
+  maybeRecoverArchive(now_ms);
   if (!_stats_history.isLiveOnly()) {
     maybeFlushArchiveNeighbours(now_ms);
   }
+#else
+  (void)now_ms;
+#endif
+}
+
+void MyMesh::maybeRecoverArchive(unsigned long now_ms) {
+#if defined(ESP_PLATFORM) && WITH_WEB_PANEL
+  if (_archive == nullptr || _archive->isMounted()) {
+    next_archive_recover_ms = 0;
+    return;
+  }
+  if (next_archive_recover_ms != 0 && !millisHasNowPassed(next_archive_recover_ms)) {
+    return;
+  }
+  if (!_archive->recover()) {
+    next_archive_recover_ms = now_ms + kArchiveRecoveryRetryIntervalMs;
+    return;
+  }
+  next_archive_recover_ms = 0;
 #else
   (void)now_ms;
 #endif
