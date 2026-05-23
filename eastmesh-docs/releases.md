@@ -18,7 +18,7 @@ If this is your first time flashing EastMesh firmware, the easiest path is:
 6. Click `Flash Firmware`.
 7. After flashing, finish setup with `Open MeshCore Config Panel` or the `Serial Console`.
 
-If you are not sure which track you need, start with `companion-wifi` for app-connected companion devices or `repeater-mqtt` for a fixed repeater that should publish to MQTT.
+If you are not sure which track you need, start with `companion-wifi` for app-connected companion devices or `observer-eastmesh` for a fixed repeater that should publish to MQTT.
 
 ## Pick Your Track
 
@@ -27,9 +27,9 @@ EastMesh publishes four release tracks:
 | Track | Use it when | Firmware filename suffix |
 | ----- | ----------- | ------------------------ |
 | `companion-wifi` | You want a companion device that connects over Wi-Fi instead of BLE or USB. | `*_companion_radio_wifi` |
-| `repeater-mqtt` | You want a repeater with Wi-Fi and MQTT uplink, usually feeding broker visibility such as EastMesh/CoreScope. | `*_repeater_mqtt` |
+| `observer-eastmesh` | You want a repeater with Wi-Fi and MQTT uplink, usually feeding broker visibility such as EastMesh/CoreScope. | `*_repeater_observer` |
 | `repeater-bridge-espnow` | You want a local ESP-NOW bridge between nearby repeaters, without MQTT uplink or the EastMesh web panel. | `*_repeater_bridge_espnow` |
-| `repeater-mqtt-bridge` | You want one repeater to provide both MQTT uplink and local ESP-NOW bridge duties. | `*_repeater_mqtt_bridge` |
+| `observer-eastmesh-bridge-espnow` | You want one repeater to provide both MQTT uplink and local ESP-NOW bridge duties. | `*_repeater_observer_espnow` |
 
 !!! note "Bridge firmware is not a WAN bridge"
 
@@ -44,17 +44,17 @@ Download the asset that matches your board and firmware type.
 Examples:
 
 - `heltec_v4_companion_radio_wifi-v1.14.1-abcdef.bin`
-- `heltec_v4_repeater_mqtt-v1.14.1-eastmesh-v1.0.1-abcdef.bin`
-- `heltec_v4_repeater_mqtt-v1.14.1-eastmesh-v1.0.1-abcdef-merged.bin`
+- `heltec_v4_repeater_observer-v1.15.0-eastmesh-v2026.5.1-abcdef.bin`
+- `heltec_v4_repeater_observer-v1.15.0-eastmesh-v2026.5.1-abcdef-merged.bin`
 - `heltec_v4_repeater_bridge_espnow-v1.15.0-abcdef.bin`
-- `heltec_v4_repeater_mqtt_bridge-v1.15.0-eastmesh-v1.4.0-abcdef.bin`
+- `heltec_v4_repeater_observer_espnow-v1.15.0-eastmesh-v2026.5.1-abcdef.bin`
 
 The important part is the board/env prefix:
 
 - `*_companion_radio_wifi`
-- `*_repeater_mqtt`
+- `*_repeater_observer`
 - `*_repeater_bridge_espnow`
-- `*_repeater_mqtt_bridge`
+- `*_repeater_observer_espnow`
 
 ## Which File To Flash
 
@@ -92,7 +92,7 @@ The recommended flasher is:
 It includes native support for the common EastMesh firmware types and can also flash custom firmware files:
 
 - `companion_radio_wifi` firmware
-- `repeater_mqtt` firmware
+- `repeater_observer` firmware
 - custom firmware files
 
 For bridge releases, use the matching bridge option if the flasher shows one. Otherwise, download the release asset yourself and flash it as a custom firmware file.
@@ -126,7 +126,7 @@ It is the traditional way to configure a repeater after flashing, including:
 - flood max
 - some advanced repeater settings
 
-As of `v1.2.1`, the local repeater web panel also includes the same common repeater settings, so users can complete initial setup there and return for occasional troubleshooting or configuration changes. On MQTT repeaters that need maximum headroom, it is still best to disable the panel again when you are finished.
+As of `v1.2.1`, the local repeater web panel also includes the same common repeater settings, so users can complete initial setup there and return for occasional troubleshooting or configuration changes. On observers that need maximum headroom, it is still best to disable the panel again when you are finished.
 
 #### Console
 
@@ -140,8 +140,8 @@ It is especially useful, and often required, for initial Wi-Fi setup on Wi-Fi-ca
 This applies to:
 
 - `companion_radio_wifi`
-- `repeater_mqtt`
-- `repeater_mqtt_bridge`
+- `repeater_observer`
+- `repeater_observer_espnow`
 
 ### Serial Console
 
@@ -160,9 +160,9 @@ For `set` commands, complete the command in the input box before sending it. For
 
 ## Common First Steps
 
-### Repeater MQTT
+### Observer
 
-`repeater_mqtt` builds include the EastMesh MQTT additions. Depending on the board, they may also include the local web panel.
+`repeater_observer` builds include the EastMesh MQTT additions. Depending on the board, they may also include the local web panel.
 
 Typical first steps after flashing:
 
@@ -173,9 +173,9 @@ Typical first steps after flashing:
 - optionally set `mqtt.owner` and `mqtt.email`
 - optionally enable `letsmesh-eu` or `letsmesh-us`
 
-### Repeater MQTT Bridge
+### Observer ESP-NOW
 
-`repeater_mqtt_bridge` builds combine the MQTT repeater role with local ESP-NOW bridge support.
+`repeater_observer_espnow` builds combine the observer role with local ESP-NOW bridge support.
 
 Typical first steps after flashing:
 

@@ -8,7 +8,7 @@ to the EastMesh firmware published at:
 
 - `https://github.com/xJARiD/MeshCore-EastMesh`
 
-These steps are intended for existing repeater users moving to the new EastMesh `*_repeater_mqtt` firmware.
+These steps are intended for existing repeater users moving to the new EastMesh `*_repeater_observer` firmware.
 
 Start by downloading the correct EastMesh release for your board from:
 

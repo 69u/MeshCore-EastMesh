@@ -1,6 +1,6 @@
 # Repeater Web Panel
 
-This page is for end users running an EastMesh `*_repeater_mqtt` build with the local web panel enabled.
+This page is for end users running an EastMesh `*_repeater_observer` build with the local web panel enabled.
 
 It covers how to reach the panel, what each section does, and what to expect when using it on desktop or mobile.
 
@@ -35,7 +35,7 @@ It gives you:
 Operational guidance:
 
 - use it for initial setup, occasional configuration changes, and troubleshooting
-- when you are finished, prefer `set web off` on MQTT repeaters that need maximum headroom
+- when you are finished, prefer `set web off` on observers that need maximum headroom
 - this leaves more internal heap available for MQTT/WSS activity, especially on dual-broker setups
 
 ## Common Tasks
@@ -78,7 +78,7 @@ The screenshots below show the current split between the lighter `/app` admin pa
 
 You need:
 
-- a supported `*_repeater_mqtt` firmware build
+- a supported `*_repeater_observer` firmware build
 - Wi-Fi configured on the repeater
 - the repeater connected to your local network
 - the repeater admin password
@@ -249,7 +249,7 @@ This section includes:
 - `mqtt.email`: owner contact email.
 - MQTT server toggles: `eastmesh-au`, `letsmesh-eu`, and `letsmesh-us`.
 
-`UNSET - To be configured` is the default for new repeater MQTT installs until a real saved value exists.
+`UNSET - To be configured` is the default for new observer installs until a real saved value exists.
 
 Notes:
 
@@ -311,6 +311,8 @@ When `web.stats` is enabled, stats history starts capturing from boot or from th
 
 Archive-backed restore requires `web.stats` enabled plus a mounted SD card on boards that support the EastMesh archive path.
 
+If archive access drops at runtime, the repeater retries the SD mount periodically while `web.stats` remains enabled.
+
 The main purpose of the SD card is to let the repeater retain and restore stats history for `/stats`. The archive keeps fast `.latest` snapshot files for quick restore and UTC-dated daily `.log` files for longer-term history. As a secondary option, those files can also be removed and inspected on a computer for deeper manual review.
 
 On no-PSRAM boards, `/stats` can still show recent graphs, but the history is smaller and does not provide the same archive-backed behaviour as PSRAM-capable boards.
@@ -341,7 +343,7 @@ On mobile:
 3. The local HTTP redirect listener on port `80` is released so OTA can take over that port.
 4. Continue with your normal OTA workflow.
 
-If an older build sends you through a strange redirect after `start ota`, use the web `Start OTA` button to begin the upgrade. This redirect issue is fixed in `repeater-mqtt-eastmesh-v1.3.11`.
+If an older build sends you through a strange redirect after `start ota`, use the web `Start OTA` button to begin the upgrade. This redirect issue is fixed in `observer-eastmesh-v1.3.11`.
 
 ### Use Historical Stats
 

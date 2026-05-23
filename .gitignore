@@ -16,6 +16,8 @@ cmake-*
 compile_commands.json
 .venv/
 venv/
+__pycache__/
+*.py[cod]
 platformio.local.ini
 src/helpers/mqtt/generated/
 site/

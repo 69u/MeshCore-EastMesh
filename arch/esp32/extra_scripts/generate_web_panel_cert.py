@@ -14,6 +14,10 @@ def render_pem_array(name, pem_text):
     return f"static const char {name}[] =\n{joined};\n"
 
 
+def ensure_trailing_newline(text):
+    return text if text.endswith("\n") else f"{text}\n"
+
+
 project_dir = Path(env["PROJECT_DIR"])
 header_path = project_dir / "src/helpers/mqtt/generated/WebPanelCert.h"
 
@@ -62,8 +66,8 @@ with tempfile.TemporaryDirectory() as tmp:
             f"openssl failed while generating the web panel certificate header: {exc.stderr.strip()}"
         ) from exc
 
-    cert_pem = cert_path.read_text()
-    key_pem = key_path.read_text()
+    cert_pem = ensure_trailing_newline(cert_path.read_text())
+    key_pem = ensure_trailing_newline(key_path.read_text())
 
 header_path.parent.mkdir(parents=True, exist_ok=True)
 header_path.write_text(

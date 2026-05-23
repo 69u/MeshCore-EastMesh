@@ -4,8 +4,8 @@ MeshCore-EastMesh keeps the upstream MeshCore firmware intact and publishes four
 
 - `companion-wifi`: use this for Wi-Fi-connected companion devices. It stays closest to upstream MeshCore and adds the EastMesh Wi-Fi rescue/configuration commands.
 - `repeater-bridge-espnow`: use this when you need a plain upstream-style repeater ESP-NOW bridge without MQTT uplink or the EastMesh web panel.
-- `repeater-mqtt`: use this for a Wi-Fi repeater that should publish to an MQTT broker and, on supported ESP32 boards, offer the optional local web panel for setup and troubleshooting.
-- `repeater-mqtt-bridge`: use this when one repeater needs both MQTT uplink and ESP-NOW bridge duties, including bridge channel/secret controls for keeping the bridge aligned with Wi-Fi.
+- `observer-eastmesh`: use this for a Wi-Fi repeater that should publish to an MQTT broker and, on supported ESP32 boards, offer the optional local web panel for setup and troubleshooting.
+- `observer-eastmesh-bridge-espnow`: use this when one repeater needs both MQTT uplink and ESP-NOW bridge duties, including bridge channel/secret controls for keeping the bridge aligned with Wi-Fi.
 
 !!! note "Bridge tracks are local radio bridges"
 

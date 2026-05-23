@@ -129,6 +129,7 @@ class MyMesh : public mesh::Mesh, public CommonCLICallbacks, public WebPanelComm
   uint32_t last_millis;
   uint64_t uptime_millis;
   unsigned long next_archive_neighbours_flush_ms;
+  unsigned long next_archive_recover_ms;
   unsigned long next_battery_sample_ms;
   unsigned long next_history_sample_ms;
   unsigned long next_local_advert, next_flood_advert;
@@ -192,6 +193,7 @@ class MyMesh : public mesh::Mesh, public CommonCLICallbacks, public WebPanelComm
   void putNeighbour(const mesh::Identity& id, uint32_t timestamp, float snr);
   size_t getNeighbourCount() const;
   void updateStatsHistory(unsigned long now_ms);
+  void maybeRecoverArchive(unsigned long now_ms);
   bool restoreArchiveNeighbours();
   void flushArchiveNeighbours();
   void maybeFlushArchiveNeighbours(unsigned long now_ms);

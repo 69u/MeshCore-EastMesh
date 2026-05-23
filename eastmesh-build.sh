@@ -35,8 +35,8 @@ Commands:
   build-companion-wifi-firmwares: Build all companion WiFi firmwares for all build targets.
   build-repeater-firmwares: Build all repeater firmwares for all build targets.
   build-repeater-bridge-espnow-firmwares: Build all repeater ESP-NOW bridge firmwares for all build targets.
-  build-repeater-mqtt-firmwares: Build all repeater MQTT firmwares for all build targets.
-  build-repeater-mqtt-bridge-firmwares: Build all repeater MQTT bridge firmwares for all build targets.
+  build-observer-firmwares: Build all observer firmwares for all build targets.
+  build-observer-espnow-firmwares: Build all observer ESP-NOW firmwares for all build targets.
   build-room-server-firmwares: Build all chat room server firmwares for all build targets.
 
 Examples:
@@ -58,11 +58,11 @@ $ sh eastmesh-build.sh build-repeater-firmwares
 Build all repeater ESP-NOW bridge firmwares
 $ sh eastmesh-build.sh build-repeater-bridge-espnow-firmwares
 
-Build all repeater MQTT firmwares
-$ sh eastmesh-build.sh build-repeater-mqtt-firmwares
+Build all observer firmwares
+$ sh eastmesh-build.sh build-observer-firmwares
 
-Build all repeater MQTT bridge firmwares
-$ sh eastmesh-build.sh build-repeater-mqtt-bridge-firmwares
+Build all observer ESP-NOW firmwares
+$ sh eastmesh-build.sh build-observer-espnow-firmwares
 
 Build all chat room server firmwares
 $ sh eastmesh-build.sh build-room-server-firmwares
@@ -315,15 +315,15 @@ build_companion_wifi_firmwares() {
 
 }
 
-build_repeater_mqtt_firmwares() {
+build_repeater_observer_firmwares() {
 
-  build_all_firmwares_by_suffix "_repeater_mqtt"
+  build_all_firmwares_by_suffix "_repeater_observer"
 
 }
 
-build_repeater_mqtt_bridge_firmwares() {
+build_repeater_observer_espnow_firmwares() {
 
-  build_all_firmwares_by_suffix "_repeater_mqtt_bridge"
+  build_all_firmwares_by_suffix "_repeater_observer_espnow"
 
 }
 
@@ -376,10 +376,10 @@ elif [[ $1 == "build-repeater-firmwares" ]]; then
   build_repeater_firmwares
 elif [[ $1 == "build-repeater-bridge-espnow-firmwares" ]]; then
   build_repeater_bridge_espnow_firmwares
-elif [[ $1 == "build-repeater-mqtt-firmwares" ]]; then
-  build_repeater_mqtt_firmwares
-elif [[ $1 == "build-repeater-mqtt-bridge-firmwares" ]]; then
-  build_repeater_mqtt_bridge_firmwares
+elif [[ $1 == "build-observer-firmwares" ]]; then
+  build_repeater_observer_firmwares
+elif [[ $1 == "build-observer-espnow-firmwares" ]]; then
+  build_repeater_observer_espnow_firmwares
 elif [[ $1 == "build-room-server-firmwares" ]]; then
   build_room_server_firmwares
 fi
