@@ -105,6 +105,12 @@ void halt() {
   while (1) ;
 }
 
+/* WIFI RECONNECT TRACKERS */
+#if defined(ESP32) && defined(WIFI_SSID)
+  bool wifi_needs_reconnect = false;
+  unsigned long last_wifi_reconnect_attempt = 0;
+#endif
+
 void setup() {
   Serial.begin(115200);
 
@@ -197,6 +203,18 @@ void setup() {
   board.setInhibitSleep(true);   // prevent sleep when WiFi is active
   WiFi.mode(WIFI_STA);
   WiFi.setSleep(static_cast<wifi_ps_type_t>(the_mesh.getWifiPowerSaveMode()));
+  WiFi.setAutoReconnect(true);
+
+  WiFi.onEvent([](WiFiEvent_t event, WiFiEventInfo_t info){
+      if (event == ARDUINO_EVENT_WIFI_STA_DISCONNECTED) {
+          WIFI_DEBUG_PRINTLN("WiFi disconnected. Flagging for reconnect...");
+          wifi_needs_reconnect = true;
+      } else if (event == ARDUINO_EVENT_WIFI_STA_GOT_IP) {
+          WIFI_DEBUG_PRINTLN("WiFi connected successfully!");
+          wifi_needs_reconnect = false;
+      }
+  });
+
   if (the_mesh.getWifiSSID()[0]) {
     WiFi.begin(the_mesh.getWifiSSID(), the_mesh.getWifiPassword());
   }
@@ -237,4 +255,14 @@ void loop() {
   ui_task.loop();
 #endif
   rtc_clock.tick();
+
+#if defined(ESP32) && defined(WIFI_SSID)
+  // Safely attempt to reconnect every 10 seconds if flagged
+  if (wifi_needs_reconnect && (millis() - last_wifi_reconnect_attempt > 10000)) {
+      WIFI_DEBUG_PRINTLN("Attempting manual WiFi reconnect...");
+      WiFi.disconnect();
+      WiFi.reconnect();
+      last_wifi_reconnect_attempt = millis();
+  }
+#endif
 }
