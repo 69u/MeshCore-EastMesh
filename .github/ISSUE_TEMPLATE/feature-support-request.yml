@@ -32,7 +32,7 @@ body:
     attributes:
       label: Firmware Target
       description: Firmware environment or binary name, if known.
-      placeholder: e.g. Heltec_v3_repeater_mqtt
+      placeholder: e.g. Heltec_v3_repeater_observer
     validations:
       required: false
 

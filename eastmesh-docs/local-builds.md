@@ -25,16 +25,16 @@ bash eastmesh-build.sh list
 Plain PlatformIO build for a single target:
 
 ```bash
-uv run pio run -e heltec_v4_repeater_mqtt
+uv run pio run -e heltec_v4_repeater_observer
 uv run pio run -e heltec_v4_companion_radio_wifi
 uv run pio run -e heltec_v4_repeater_bridge_espnow
-uv run pio run -e heltec_v4_repeater_mqtt_bridge
+uv run pio run -e heltec_v4_repeater_observer_espnow
 ```
 
 Flash a target:
 
 ```bash
-uv run pio run -e heltec_v4_repeater_mqtt -t upload --upload-port /dev/tty.usbmodemXXXX
+uv run pio run -e heltec_v4_repeater_observer -t upload --upload-port /dev/tty.usbmodemXXXX
 ```
 
 Serial monitor:
@@ -54,12 +54,12 @@ export FIRMWARE_VERSION=v1.14.1
 bash eastmesh-build.sh build-firmware heltec_v4_companion_radio_wifi
 ```
 
-Repeater MQTT:
+Observer:
 
 ```bash
-export FIRMWARE_VERSION=v1.14.1
-export EASTMESH_VERSION=v1.0.1
-bash eastmesh-build.sh build-firmware heltec_v4_repeater_mqtt
+export FIRMWARE_VERSION=v1.15.0
+export EASTMESH_VERSION=v2026.5.1
+bash eastmesh-build.sh build-firmware heltec_v4_repeater_observer
 ```
 
 Repeater ESP-NOW bridge:
@@ -69,12 +69,12 @@ export FIRMWARE_VERSION=v1.15.0
 bash eastmesh-build.sh build-firmware heltec_v4_repeater_bridge_espnow
 ```
 
-Repeater MQTT bridge:
+Observer ESP-NOW:
 
 ```bash
 export FIRMWARE_VERSION=v1.15.0
-export EASTMESH_VERSION=v1.4.0
-bash eastmesh-build.sh build-firmware heltec_v4_repeater_mqtt_bridge
+export EASTMESH_VERSION=v2026.5.1
+bash eastmesh-build.sh build-firmware heltec_v4_repeater_observer_espnow
 ```
 
 This produces versioned artifacts in `out/`.
@@ -82,45 +82,45 @@ This produces versioned artifacts in `out/`.
 Versioning rule:
 
 - `companion-wifi` and `repeater-bridge-espnow` use the upstream MeshCore version as `FIRMWARE_VERSION`
-- `repeater-mqtt` and `repeater-mqtt-bridge` use the upstream MeshCore version as `FIRMWARE_VERSION` plus the EastMesh release version as `EASTMESH_VERSION`
+- `observer-eastmesh` and `observer-bridge-espnow-eastmesh` use the upstream MeshCore version as `FIRMWARE_VERSION` plus the EastMesh release version as `EASTMESH_VERSION`
 
-## Supported `repeater_mqtt` Boards
+## Supported `repeater_observer` Boards
 
 These are the full PlatformIO env names used for local source builds and release artifact naming.
 
 ```text
-Generic_E22_sx1262_repeater_mqtt
-Generic_E22_sx1268_repeater_mqtt
-Heltec_E213_repeater_mqtt
-Heltec_E290_repeater_mqtt
-Heltec_T190_repeater_mqtt
-heltec_tracker_v2_repeater_mqtt
-Heltec_v2_repeater_mqtt
-Heltec_v3_repeater_mqtt
-heltec_v4_repeater_mqtt
-heltec_v4_tft_repeater_mqtt
-Heltec_Wireless_Paper_repeater_mqtt
-Heltec_Wireless_Tracker_repeater_mqtt
-Heltec_WSL3_repeater_mqtt
-LilyGo_T3S3_sx1262_repeater_mqtt
-LilyGo_T3S3_sx1276_repeater_mqtt
-LilyGo_TBeam_1W_repeater_mqtt
-LilyGo_TDeck_repeater_mqtt
-LilyGo_Tlora_C6_repeater_mqtt
-M5Stack_Unit_C6L_repeater_mqtt
-Meshadventurer_sx1262_repeater_mqtt
-Meshadventurer_sx1268_repeater_mqtt
-Meshimi_repeater_mqtt
-nibble_screen_connect_repeater_mqtt
-RAK_3112_repeater_mqtt
-Station_G2_logging_repeater_mqtt
-Station_G2_repeater_mqtt
-T_Beam_S3_Supreme_SX1262_repeater_mqtt
-Tbeam_SX1262_repeater_mqtt
-Tbeam_SX1276_repeater_mqtt
-WHY2025_badge_repeater_mqtt
-Xiao_C6_repeater_mqtt
-Xiao_S3_WIO_repeater_mqtt
+Generic_E22_sx1262_repeater_observer
+Generic_E22_sx1268_repeater_observer
+Heltec_E213_repeater_observer
+Heltec_E290_repeater_observer
+Heltec_T190_repeater_observer
+heltec_tracker_v2_repeater_observer
+Heltec_v2_repeater_observer
+Heltec_v3_repeater_observer
+heltec_v4_repeater_observer
+heltec_v4_tft_repeater_observer
+Heltec_Wireless_Paper_repeater_observer
+Heltec_Wireless_Tracker_repeater_observer
+Heltec_WSL3_repeater_observer
+LilyGo_T3S3_sx1262_repeater_observer
+LilyGo_T3S3_sx1276_repeater_observer
+LilyGo_TBeam_1W_repeater_observer
+LilyGo_TDeck_repeater_observer
+LilyGo_Tlora_C6_repeater_observer
+M5Stack_Unit_C6L_repeater_observer
+Meshadventurer_sx1262_repeater_observer
+Meshadventurer_sx1268_repeater_observer
+Meshimi_repeater_observer
+nibble_screen_connect_repeater_observer
+RAK_3112_repeater_observer
+Station_G2_logging_repeater_observer
+Station_G2_repeater_observer
+T_Beam_S3_Supreme_SX1262_repeater_observer
+Tbeam_SX1262_repeater_observer
+Tbeam_SX1276_repeater_observer
+WHY2025_badge_repeater_observer
+Xiao_C6_repeater_observer
+Xiao_S3_WIO_repeater_observer
 ```
 
 ## Supported Bridge Boards
@@ -129,18 +129,18 @@ Bridge targets can be listed from the repo root:
 
 ```bash
 bash eastmesh-build.sh list | grep '_repeater_bridge_espnow'
-bash eastmesh-build.sh list | grep '_repeater_mqtt_bridge'
+bash eastmesh-build.sh list | grep '_repeater_observer_espnow'
 ```
 
 Common examples:
 
 ```text
 heltec_v4_repeater_bridge_espnow
-heltec_v4_repeater_mqtt_bridge
+heltec_v4_repeater_observer_espnow
 Station_G2_repeater_bridge_espnow
-Station_G2_repeater_mqtt_bridge
+Station_G2_repeater_observer_espnow
 T_Beam_S3_Supreme_SX1262_repeater_bridge_espnow
-T_Beam_S3_Supreme_SX1262_repeater_mqtt_bridge
+T_Beam_S3_Supreme_SX1262_repeater_observer_espnow
 ```
 
 Bridge firmware is for local ESP-NOW bridge use between nearby repeaters. It is not MQTT-over-WAN or VPN bridging.

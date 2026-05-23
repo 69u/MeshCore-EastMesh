@@ -7,7 +7,7 @@ EastMesh layer on top of upstream MeshCore.
 **Default:** preserve upstream behavior.  
 Only modify code for clearly scoped EastMesh features:
 
-- `*_repeater_mqtt`
+- `*_repeater_observer`
 - `*_companion_radio_wifi`
 - MQTT uplink/broker
 - repeater web panel
@@ -87,8 +87,8 @@ bash eastmesh-build.sh list
 Build a single target:
 
 ```bash
-uv run pio run -e heltec_v4_repeater_mqtt
-uv run pio run -e T_Beam_S3_Supreme_SX1262_repeater_mqtt
+uv run pio run -e heltec_v4_repeater_observer
+uv run pio run -e T_Beam_S3_Supreme_SX1262_repeater_observer
 uv run pio run -e heltec_v4_companion_radio_wifi
 uv run pio run -e T_Beam_S3_Supreme_SX1262_companion_radio_wifi
 ```
@@ -96,17 +96,17 @@ uv run pio run -e T_Beam_S3_Supreme_SX1262_companion_radio_wifi
 Build with release-style metadata:
 
 ```bash
-export FIRMWARE_VERSION=v1.14.1
-export EASTMESH_VERSION=v1.0.1
-bash eastmesh-build.sh build-firmware heltec_v4_repeater_mqtt
-bash eastmesh-build.sh build-firmware T_Beam_S3_Supreme_SX1262_repeater_mqtt
+export FIRMWARE_VERSION=v1.15.0
+export EASTMESH_VERSION=v2026.5.1
+bash eastmesh-build.sh build-firmware heltec_v4_repeater_observer
+bash eastmesh-build.sh build-firmware T_Beam_S3_Supreme_SX1262_repeater_observer
 ```
 
 Flash a target:
 
 ```bash
-uv run pio run -e heltec_v4_repeater_mqtt -t upload --upload-port /dev/tty.usbmodemXXXX
-uv run pio run -e T_Beam_S3_Supreme_SX1262_repeater_mqtt -t upload --upload-port /dev/tty.usbmodemXXXX
+uv run pio run -e heltec_v4_repeater_observer -t upload --upload-port /dev/tty.usbmodemXXXX
+uv run pio run -e T_Beam_S3_Supreme_SX1262_repeater_observer -t upload --upload-port /dev/tty.usbmodemXXXX
 ```
 
 ## Key Files
@@ -142,9 +142,9 @@ If you change any of the following, update docs in the same PR when practical:
 - Flashing/release asset guidance:
   - update `eastmesh-docs/releases.md`
 
-## Repeater MQTT Notes
+## Observer Notes
 
-`*_repeater_mqtt` builds may include the local HTTPS web panel on supported ESP32 targets.
+`*_repeater_observer` builds may include the local HTTPS web panel on supported ESP32 targets.
 
 Operational guidance already reflected in docs:
 
@@ -160,7 +160,7 @@ Do not document companion rescue commands in repeater docs. Do not assume web-pa
 Companion release/version rule:
 
 - companion tags use the official upstream MeshCore release version only
-- the current official MeshCore version is `v1.14.1`
+- the current official MeshCore version is `v1.15.0`
 - companion releases are only cut when `meshcore-dev/MeshCore` has made an official release
 - do not invent separate EastMesh companion version numbers
 
@@ -169,19 +169,19 @@ Companion release/version rule:
 Current tag formats:
 
 ```bash
-git tag companion-wifi-v1.2.3
-git tag repeater-bridge-espnow-v1.2.3
-git tag repeater-mqtt-bridge-eastmesh-v1.0.1
-git tag repeater-mqtt-eastmesh-v1.0.1
+git tag companion-wifi-v1.15.0
+git tag repeater-bridge-espnow-v1.15.0
+git tag observer-bridge-espnow-eastmesh-v2026.5.1
+git tag observer-eastmesh-v2026.5.1
 ```
 
 Rules:
 
 - `companion-wifi` tags use the upstream MeshCore version directly
 - `repeater-bridge-espnow` tags use the upstream MeshCore version directly
-- `repeater-mqtt-bridge` tags use the EastMesh release version in the tag
-- `repeater-mqtt` tags use the EastMesh release version in the tag
-- GitHub Actions variable `OFFICIAL_MESHCORE_VERSION` supplies the upstream base version for repeater MQTT and repeater MQTT bridge release builds
+- `observer-bridge-espnow-eastmesh` tags use the EastMesh release version in the tag
+- `observer-eastmesh` tags use the EastMesh release version in the tag
+- GitHub Actions variable `OFFICIAL_MESHCORE_VERSION` supplies the upstream base version for Observer EastMesh and Observer ESP-NOW EastMesh release builds
 - if the upstream MeshCore release version changes, update `OFFICIAL_MESHCORE_VERSION` in GitHub before cutting release tags
 
 Typical release flow:

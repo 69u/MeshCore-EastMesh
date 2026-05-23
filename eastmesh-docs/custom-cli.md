@@ -16,7 +16,7 @@ set mqtt.iata <code>
 get mqtt.status
 ```
 
-For MQTT repeaters with the local web panel, these are also useful:
+For observers with the local web panel, these are also useful:
 
 ```text
 set web on
@@ -24,11 +24,11 @@ get web.status
 set web off
 ```
 
-Use `set web on` while setting up or troubleshooting, then use `set web off` when a fixed MQTT repeater needs maximum memory headroom.
+Use `set web on` while setting up or troubleshooting, then use `set web off` when a fixed observer needs maximum memory headroom.
 
-## Repeater MQTT Commands
+## Observer Commands
 
-These commands are available on `*_repeater_mqtt` firmware targets.
+These commands are available on `*_repeater_observer` firmware targets.
 
 No-argument `get` commands must be entered exactly as shown.
 
@@ -71,7 +71,7 @@ No-argument `get` commands must be entered exactly as shown.
 
 Notes:
 
-- new repeater MQTT installs default `mqtt.iata` to `UNSET`
+- new observer installs default `mqtt.iata` to `UNSET`
 - `letsmesh-eu` and `letsmesh-us` remain off by default unless already configured in saved prefs
 - if `mqtt.iata` is `UNSET`, `eastmesh-au`, `letsmesh-eu`, and `letsmesh-us` will not connect even if they are toggled on
 - turning off a connected broker publishes a retained MQTT status update with `"status":"offline"` before the client disconnects
@@ -83,7 +83,7 @@ Legacy dotted aliases are also accepted:
 - `mqtt.letsmesh.eu`
 - `mqtt.letsmesh.us`
 
-### Wi-Fi Settings For MQTT Repeaters
+### Wi-Fi Settings For Observers
 
 - `get wifi.status`: shows SSID, connection state, raw Wi-Fi status code, IP, channel, and signal when connected.
 - `get wifi.ssid`: shows the configured Wi-Fi SSID.
@@ -92,9 +92,9 @@ Legacy dotted aliases are also accepted:
 - `get wifi.powersaving`: shows the current Wi-Fi power save mode.
 - `set wifi.powersaving none|min|max`: sets Wi-Fi power saving mode.
 
-### ESP-NOW Bridge Settings For MQTT Bridge Repeaters
+### ESP-NOW Bridge Settings For Observer ESP-NOW Builds
 
-These commands are available on `*_repeater_mqtt_bridge` firmware targets.
+These commands are available on `*_repeater_observer_espnow` firmware targets.
 
 Bridge commands are for local ESP-NOW bridge use between nearby repeaters, such as linking repeaters on `Australia (Narrow)` and `Australia (Mid)`. They are not MQTT-over-WAN, VPN, or internet bridge controls.
 
@@ -103,9 +103,9 @@ Bridge commands are for local ESP-NOW bridge use between nearby repeaters, such 
 - `get bridge.secret`: shows the configured ESP-NOW bridge secret.
 - `set bridge.secret <secret>`: sets the shared ESP-NOW bridge secret and restarts the bridge.
 
-After running `set bridge.channel`, expect the bridge and web panel connection to drop briefly while the radio restarts. On current MQTT bridge test builds, this can look like the board rebooted.
+After running `set bridge.channel`, expect the bridge and web panel connection to drop briefly while the radio restarts. On current observer ESP-NOW builds, this can look like the board rebooted.
 
-For `*_repeater_mqtt_bridge` builds that are connected to Wi-Fi, the ESP-NOW bridge channel must match the active 2.4 GHz Wi-Fi channel:
+For `*_repeater_observer_espnow` builds that are connected to Wi-Fi, the ESP-NOW bridge channel must match the active 2.4 GHz Wi-Fi channel:
 
 1. Run `get wifi.status`.
 2. Read the `channel:<n>` value from the connected Wi-Fi status.
@@ -145,7 +145,7 @@ OK
 
 ### Board Battery Reporting
 
-- On repeater MQTT builds, background battery sampling used for MQTT/status history is rate-limited to about once per minute. Explicit status and telemetry requests still refresh the reading immediately.
+- On observer builds, background battery sampling used for MQTT/status history is rate-limited to about once per minute. Explicit status and telemetry requests still refresh the reading immediately.
 
 ### T-Beam 1W Fan Control
 

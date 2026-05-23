@@ -6,15 +6,15 @@ MeshCore-EastMesh originates from the upstream MeshCore project:
 
 Credits to Scott Powell / Ripple Radios and the MeshCore contributors for the original firmware and project foundation.
 
-EastMesh is a community-driven mesh network across Eastern Australia. This repository provides tailored builds of MeshCore, including WiFi companion firmware with additional CLI tools and MQTT-enabled repeater builds that integrate with our CoreScope telemetry platform.
+EastMesh is a community-driven mesh network across Eastern Australia. This repository provides tailored builds of MeshCore, including WiFi companion firmware with additional CLI tools and Observer firmware that integrates with our CoreScope telemetry platform.
 
 CoreScope (<https://core.eastmesh.au>) offers visibility into the network, including repeater status, observers, and mapping data.
 
-**MQTT repeater builds feed EastMesh Core telemetry and are intended for Eastern Australia repeaters only**; running them elsewhere can skew shared network data.
+**Observer builds feed EastMesh Core telemetry and are intended for Eastern Australia repeaters only**; running them elsewhere can skew shared network data.
 
 ## What This Repo Adds
 
-- `*_repeater_mqtt` firmware targets with:
+- `*_repeater_observer` firmware targets with:
   - native WiFi
   - MQTT over WSS with JWT auth
   - optional local HTTPS config panel on supported ESP32 targets
@@ -81,22 +81,22 @@ bash eastmesh-build.sh list
 Build a single target:
 
 ```bash
-uv run pio run -e heltec_v4_repeater_mqtt
+uv run pio run -e heltec_v4_repeater_observer
 uv run pio run -e heltec_v4_companion_radio_wifi
 ```
 
 Build with release-style version metadata:
 
 ```bash
-export FIRMWARE_VERSION=v1.14.1
-export EASTMESH_VERSION=v1.0.1
-bash eastmesh-build.sh build-firmware heltec_v4_repeater_mqtt
+export FIRMWARE_VERSION=v1.15.0
+export EASTMESH_VERSION=v2026.5.1
+bash eastmesh-build.sh build-firmware heltec_v4_repeater_observer
 ```
 
 Flash a target:
 
 ```bash
-uv run pio run -e heltec_v4_repeater_mqtt -t upload --upload-port /dev/tty.usbmodemXXXX
+uv run pio run -e heltec_v4_repeater_observer -t upload --upload-port /dev/tty.usbmodemXXXX
 ```
 
 Open a serial monitor:
@@ -124,7 +124,7 @@ uv run --group docs zensical build
 - [`platformio.ini`](./platformio.ini)
   - root PlatformIO config and ESP32 helper scripts
 - [`variants/eastmesh_mqtt/platformio.ini`](./variants/eastmesh_mqtt/platformio.ini)
-  - shared EastMesh MQTT repeater env definitions
+  - shared EastMesh observer env definitions
 - [`examples/simple_repeater/MyMesh.cpp`](./examples/simple_repeater/MyMesh.cpp)
   - repeater CLI wiring, MQTT command surface, and web allowlist integration
 - [`src/helpers/mqtt/MQTTUplink.cpp`](./src/helpers/mqtt/MQTTUplink.cpp)
@@ -159,7 +159,7 @@ uv run --group docs zensical build
 
 ### Local Web Panel
 
-On supported `*_repeater_mqtt` ESP32 targets, the repeater can expose a local HTTPS config panel over WiFi.
+On supported `*_repeater_observer` ESP32 targets, the repeater can expose a local HTTPS config panel over WiFi.
 
 Features include:
 
@@ -169,7 +169,7 @@ Features include:
 - light and dark themes
 - optional disable via `set web off`
 
-Recommended use is initial setup and occasional troubleshooting. On MQTT repeater deployments, disable the panel again when finished if you want maximum MQTT heap headroom.
+Recommended use is initial setup and occasional troubleshooting. On observer deployments, disable the panel again when finished if you want maximum MQTT heap headroom.
 
 ### Companion WiFi Additions
 
@@ -193,7 +193,9 @@ These rescue commands are only available after entering `CLI Rescue`:
 ## Active GitHub Workflows
 
 - `.github/workflows/eastmesh-build-companion-wifi-firmwares.yml`
-- `.github/workflows/eastmesh-build-repeater-mqtt-firmwares.yml`
+- `.github/workflows/eastmesh-build-observer-firmwares.yml`
+- `.github/workflows/eastmesh-build-repeater-bridge-espnow-firmwares.yml`
+- `.github/workflows/eastmesh-build-observer-espnow-firmwares.yml`
 - `.github/workflows/eastmesh-pr-build-check.yml`
 - `.github/workflows/eastmesh-push-build-check.yml`
 - `.github/workflows/eastmesh-github-pages.yml`
@@ -203,7 +205,9 @@ The upstream MeshCore workflows are retained under their original filenames to r
 The current release workflows intentionally focus only on:
 
 - `companion-wifi`
-- `repeater-mqtt`
+- `repeater-bridge-espnow`
+- `observer-eastmesh`
+- `observer-bridge-espnow-eastmesh`
 
 ## Release Tags
 
@@ -211,12 +215,14 @@ Current release tags are:
 
 ```bash
 git tag companion-wifi-v1.14.1
-git tag repeater-mqtt-eastmesh-v1.0.1
+git tag repeater-bridge-espnow-v1.15.0
+git tag observer-eastmesh-v2026.5.1
+git tag observer-bridge-espnow-eastmesh-v2026.5.1
 ```
 
 Companion WiFi uses the upstream MeshCore version in the tag.
 
-Repeater MQTT uses:
+Observer uses:
 
 - `OFFICIAL_MESHCORE_VERSION` from GitHub Actions variables as `FIRMWARE_VERSION`
 - the EastMesh tag version as `EASTMESH_VERSION`

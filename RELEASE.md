@@ -8,7 +8,7 @@ Set the repository Actions variable `OFFICIAL_MESHCORE_VERSION` to the current u
 
 Example:
 
-- `OFFICIAL_MESHCORE_VERSION=v1.2.3`
+- `OFFICIAL_MESHCORE_VERSION=v1.15.0`
 
 This value becomes the base `FIRMWARE_VERSION` used by the release workflows.
 
@@ -16,22 +16,22 @@ This value becomes the base `FIRMWARE_VERSION` used by the release workflows.
 
 Push one or more of the following tag formats to trigger the matching firmware release workflow:
 
-- `companion-wifi-v1.2.3`
-- `repeater-bridge-espnow-v1.2.3`
-- `repeater-mqtt-bridge-eastmesh-v1.0.1`
-- `repeater-mqtt-eastmesh-v1.0.1`
+- `companion-wifi-v1.15.0`
+- `repeater-bridge-espnow-v1.15.0`
+- `observer-bridge-espnow-eastmesh-v2026.5.1`
+- `observer-eastmesh-v2026.5.1`
 
-Use the upstream MeshCore version in `companion-wifi-v1.2.3`.
-Use the upstream MeshCore version in `repeater-bridge-espnow-v1.2.3`.
-Use the EastMesh release version in `repeater-mqtt-bridge-eastmesh-v1.0.1`.
-Use the EastMesh release version in `repeater-mqtt-eastmesh-v1.0.1`.
+Use the upstream MeshCore version in `companion-wifi-v1.15.0`.
+Use the upstream MeshCore version in `repeater-bridge-espnow-v1.15.0`.
+Use the EastMesh release version in `observer-bridge-espnow-eastmesh-v2026.5.1`.
+Use the EastMesh release version in `observer-eastmesh-v2026.5.1`.
 
 Each tag triggers a separate workflow:
 
 - `companion-wifi-v*` builds companion WiFi firmware
 - `repeater-bridge-espnow-v*` builds repeater ESP-NOW bridge firmware
-- `repeater-mqtt-bridge-eastmesh-*` builds repeater MQTT bridge firmware
-- `repeater-mqtt-eastmesh-*` builds repeater MQTT firmware
+- `observer-bridge-espnow-eastmesh-v*` builds Observer ESP-NOW firmware
+- `observer-eastmesh-v*` builds Observer firmware
 
 You can push one, or more tags on the same commit, and they will all build separately.
 
@@ -41,21 +41,21 @@ During the GitHub Actions build:
 
 - `companion-wifi` uses the version in the tag as `FIRMWARE_VERSION`
 - `repeater-bridge-espnow` uses the version in the tag as `FIRMWARE_VERSION`
-- `repeater-mqtt-bridge` uses `OFFICIAL_MESHCORE_VERSION` as `FIRMWARE_VERSION` and the EastMesh version from the tag as `EASTMESH_VERSION`
-- `repeater-mqtt` uses `OFFICIAL_MESHCORE_VERSION` as `FIRMWARE_VERSION` and the EastMesh version from the tag as `EASTMESH_VERSION`
+- `observer-bridge-espnow-eastmesh` uses `OFFICIAL_MESHCORE_VERSION` as `FIRMWARE_VERSION` and the EastMesh version from the tag as `EASTMESH_VERSION`
+- `observer-eastmesh` uses `OFFICIAL_MESHCORE_VERSION` as `FIRMWARE_VERSION` and the EastMesh version from the tag as `EASTMESH_VERSION`
 
 The resulting version string depends on the workflow:
 
-- `companion-wifi`: `v1.2.3-<commit>`
-- `repeater-bridge-espnow`: `v1.2.3-<commit>`
-- `repeater-mqtt-bridge`: `v1.2.3-eastmesh-v1.0.1-<commit>`
-- `repeater-mqtt`: `v1.2.3-eastmesh-v1.0.1-<commit>`
+- `companion-wifi`: `v1.15.0-<commit>`
+- `repeater-bridge-espnow`: `v1.15.0-<commit>`
+- `observer-bridge-espnow-eastmesh`: `v1.15.0-eastmesh-v2026.5.1-<commit>`
+- `observer-eastmesh`: `v1.15.0-eastmesh-v2026.5.1-<commit>`
 
 Example:
 
-- tag: `repeater-mqtt-eastmesh-v1.0.1`
-- repo variable: `OFFICIAL_MESHCORE_VERSION=v1.2.3`
-- resulting build version: `v1.2.3-eastmesh-v1.0.1-abcdef`
+- tag: `observer-eastmesh-v2026.5.1`
+- repo variable: `OFFICIAL_MESHCORE_VERSION=v1.15.0`
+- resulting build version: `v1.15.0-eastmesh-v2026.5.1-abcdef`
 
 ## Typical Release Flow
 
@@ -73,16 +73,16 @@ If `release-notes.yml` should reflect the tagged firmware release in-repo, make 
 Example:
 
 ```bash
-git tag companion-wifi-v1.2.3
-git tag repeater-bridge-espnow-v1.2.3
-git tag repeater-mqtt-bridge-eastmesh-v1.0.1
-git tag repeater-mqtt-eastmesh-v1.0.1
-git push origin companion-wifi-v1.2.3 repeater-bridge-espnow-v1.2.3 repeater-mqtt-bridge-eastmesh-v1.0.1 repeater-mqtt-eastmesh-v1.0.1
+git tag companion-wifi-v1.15.0
+git tag repeater-bridge-espnow-v1.15.0
+git tag observer-bridge-espnow-eastmesh-v2026.5.1
+git tag observer-eastmesh-v2026.5.1
+git push origin companion-wifi-v1.15.0 repeater-bridge-espnow-v1.15.0 observer-bridge-espnow-eastmesh-v2026.5.1 observer-eastmesh-v2026.5.1
 ```
 
 ## Supported Tags
 
-- `companion-wifi-v1.2.3`
-- `repeater-bridge-espnow-v1.2.3`
-- `repeater-mqtt-bridge-eastmesh-v1.0.1`
-- `repeater-mqtt-eastmesh-v1.0.1`
+- `companion-wifi-v1.15.0`
+- `repeater-bridge-espnow-v1.15.0`
+- `observer-bridge-espnow-eastmesh-v2026.5.1`
+- `observer-eastmesh-v2026.5.1`

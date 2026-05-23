@@ -1,6 +1,6 @@
 # Repeater Web API
 
-This page documents the local HTTPS API exposed by EastMesh `*_repeater_mqtt` builds that support the web panel.
+This page documents the local HTTPS API exposed by EastMesh `*_repeater_observer` builds that support the web panel.
 
 It is intended for:
 
@@ -34,7 +34,7 @@ curl -sk https://<repeater-ip>/api/command \
 
 The API is available only when:
 
-- you are running a supported `*_repeater_mqtt` firmware build
+- you are running a supported `*_repeater_observer` firmware build
 - the repeater web panel is enabled and running
 - you can reach the repeater over the local network
 - you have authenticated with the repeater admin password

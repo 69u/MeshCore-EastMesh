@@ -31,7 +31,7 @@
 #endif
 
 #ifndef CLIENT_VERSION
-  #define CLIENT_VERSION "eastmesh-repeater-mqtt"
+  #define CLIENT_VERSION "eastmesh-observer"
 #endif
 
 #ifndef MQTT_DEBUG
