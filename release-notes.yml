@@ -3,7 +3,7 @@ tracks:
   - companion-wifi
   - repeater-bridge-espnow
   - observer-eastmesh
-  - observer-bridge-espnow-eastmesh
+  - observer-eastmesh-bridge-espnow
 generated_from: "Adjacent git tag comparisons plus non-merge commit subjects."
 
 releases:
@@ -77,16 +77,16 @@ releases:
     breaking_changes:
       - "The EastMesh MQTT release tag format and PlatformIO target suffix changed to Observer naming."
 
-  - track: observer-bridge-espnow-eastmesh
+  - track: observer-eastmesh-bridge-espnow
     version: "2026.5.1"
-    tag: "observer-bridge-espnow-eastmesh-v2026.5.1"
+    tag: "observer-eastmesh-bridge-espnow-v2026.5.1"
     date: "2026-05-23"
     previous_version: "1.4.0"
     summary: "Renames the EastMesh MQTT bridge release track and PlatformIO targets to Observer ESP-NOW naming."
     changes:
       - type: changed
         area: release
-        text: "Renamed the EastMesh MQTT bridge release tag format from `repeater-mqtt-bridge-eastmesh-v*` to `observer-bridge-espnow-eastmesh-v*`."
+        text: "Renamed the EastMesh MQTT bridge release tag format from `repeater-mqtt-bridge-eastmesh-v*` to `observer-eastmesh-bridge-espnow-v*`."
       - type: changed
         area: build
         text: "Renamed `*_repeater_mqtt_bridge` PlatformIO environments and release artifact prefixes to `*_repeater_observer_espnow`."

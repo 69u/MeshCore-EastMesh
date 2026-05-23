@@ -207,7 +207,7 @@ The current release workflows intentionally focus only on:
 - `companion-wifi`
 - `repeater-bridge-espnow`
 - `observer-eastmesh`
-- `observer-bridge-espnow-eastmesh`
+- `observer-eastmesh-bridge-espnow`
 
 ## Release Tags
 
@@ -217,7 +217,7 @@ Current release tags are:
 git tag companion-wifi-v1.14.1
 git tag repeater-bridge-espnow-v1.15.0
 git tag observer-eastmesh-v2026.5.1
-git tag observer-bridge-espnow-eastmesh-v2026.5.1
+git tag observer-eastmesh-bridge-espnow-v2026.5.1
 ```
 
 Companion WiFi uses the upstream MeshCore version in the tag.

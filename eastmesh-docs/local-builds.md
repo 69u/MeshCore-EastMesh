@@ -82,7 +82,7 @@ This produces versioned artifacts in `out/`.
 Versioning rule:
 
 - `companion-wifi` and `repeater-bridge-espnow` use the upstream MeshCore version as `FIRMWARE_VERSION`
-- `observer-eastmesh` and `observer-bridge-espnow-eastmesh` use the upstream MeshCore version as `FIRMWARE_VERSION` plus the EastMesh release version as `EASTMESH_VERSION`
+- `observer-eastmesh` and `observer-eastmesh-bridge-espnow` use the upstream MeshCore version as `FIRMWARE_VERSION` plus the EastMesh release version as `EASTMESH_VERSION`
 
 ## Supported `repeater_observer` Boards
 

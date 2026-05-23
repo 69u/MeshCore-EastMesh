@@ -171,7 +171,7 @@ Current tag formats:
 ```bash
 git tag companion-wifi-v1.15.0
 git tag repeater-bridge-espnow-v1.15.0
-git tag observer-bridge-espnow-eastmesh-v2026.5.1
+git tag observer-eastmesh-bridge-espnow-v2026.5.1
 git tag observer-eastmesh-v2026.5.1
 ```
 
@@ -179,7 +179,7 @@ Rules:
 
 - `companion-wifi` tags use the upstream MeshCore version directly
 - `repeater-bridge-espnow` tags use the upstream MeshCore version directly
-- `observer-bridge-espnow-eastmesh` tags use the EastMesh release version in the tag
+- `observer-eastmesh-bridge-espnow` tags use the EastMesh release version in the tag
 - `observer-eastmesh` tags use the EastMesh release version in the tag
 - GitHub Actions variable `OFFICIAL_MESHCORE_VERSION` supplies the upstream base version for Observer EastMesh and Observer ESP-NOW EastMesh release builds
 - if the upstream MeshCore release version changes, update `OFFICIAL_MESHCORE_VERSION` in GitHub before cutting release tags

@@ -35,7 +35,7 @@ jobs:
         uses: softprops/action-gh-release@v3
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          name: Observer MQTT Firmware ${{ env.RELEASE_VERSION }}
+          name: Observer EastMesh Firmware ${{ env.RELEASE_VERSION }}
           body: ""
           draft: true
           files: out/*
