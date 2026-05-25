@@ -1008,7 +1008,7 @@ const char kWebPanelAppHtml[] PROGMEM = R"HTML(
 	                  <div class="field-card">
 	                    <label class="label" for="mqttCustomEndpoint">Host:Port</label>
 	                    <div class="inline-actions">
-	                      <input id="mqttCustomEndpoint" placeholder="mqtt.xnet.wtf:1883" maxlength="101">
+	                      <input id="mqttCustomEndpoint" placeholder="mqtt.example.local:1883" maxlength="101">
 	                      <button id="refreshCustomEndpointBtn" class="iconbtn" title="Refresh custom MQTT host and port">&#8635;</button>
 	                      <button id="saveCustomEndpointBtn" class="savebtn">Save</button>
 	                    </div>
@@ -2510,7 +2510,7 @@ const char kWebPanelAppHtml[] PROGMEM = R"HTML(
       if (!input) return;
       const parsed = parseCustomEndpoint(input.value);
       if (!parsed) {
-        statusEl.textContent = "Use host:port, for example mqtt.xnet.wtf:1883";
+        statusEl.textContent = "Use host:port, for example mqtt.example.local:1883";
         return;
       }
       const hostResult = await runCommand("set mqtt.custom.host " + parsed.host);
