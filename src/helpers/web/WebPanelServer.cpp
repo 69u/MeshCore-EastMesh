@@ -1005,22 +1005,12 @@ const char kWebPanelAppHtml[] PROGMEM = R"HTML(
 	                  </div>
 	                </div>
 	                <div class="broker-card">
-	                  <div class="row">
-	                    <div class="field-card">
-	                      <label class="label" for="mqttCustomHost">Host</label>
-	                      <div class="inline-actions">
-	                        <input id="mqttCustomHost" placeholder="mqtt.example.net" maxlength="95">
-	                        <button class="iconbtn" data-load-cmd="get mqtt.custom.host" data-load-input="mqttCustomHost" title="Refresh custom MQTT host">&#8635;</button>
-	                        <button class="savebtn" data-prefix="set mqtt.custom.host " data-input="mqttCustomHost">Save</button>
-	                      </div>
-	                    </div>
-	                    <div class="field-card">
-	                      <label class="label" for="mqttCustomPort">Port</label>
-	                      <div class="inline-actions">
-	                        <input id="mqttCustomPort" inputmode="numeric" placeholder="1883" maxlength="5">
-	                        <button class="iconbtn" data-load-cmd="get mqtt.custom.port" data-load-input="mqttCustomPort" title="Refresh custom MQTT port">&#8635;</button>
-	                        <button class="savebtn" data-prefix="set mqtt.custom.port " data-input="mqttCustomPort">Save</button>
-	                      </div>
+	                  <div class="field-card">
+	                    <label class="label" for="mqttCustomEndpoint">Host:Port</label>
+	                    <div class="inline-actions">
+	                      <input id="mqttCustomEndpoint" placeholder="mqtt.xnet.wtf:1883" maxlength="101">
+	                      <button id="refreshCustomEndpointBtn" class="iconbtn" title="Refresh custom MQTT host and port">&#8635;</button>
+	                      <button id="saveCustomEndpointBtn" class="savebtn">Save</button>
 	                    </div>
 	                  </div>
 	                  <div class="row">
@@ -2325,7 +2315,7 @@ const char kWebPanelAppHtml[] PROGMEM = R"HTML(
       } else if (format === "uppercase") {
         value = value.toUpperCase();
       }
-      if ((inputId === "mqttCustomHost" || inputId === "mqttCustomUsername") && value === "-") {
+      if (inputId === "mqttCustomUsername" && value === "-") {
         value = "";
       }
       document.getElementById(inputId).value = value;
@@ -2491,6 +2481,43 @@ const char kWebPanelAppHtml[] PROGMEM = R"HTML(
       const result = await runCommand(cmd, options);
       if (!result.ok) return;
       setBrokerToggle(inputId, parseReplyValue(result.text));
+    }
+    async function loadCustomEndpoint(options = {}) {
+      const hostResult = await runCommand("get mqtt.custom.host", options);
+      if (!hostResult.ok) return;
+      const portResult = await runCommand("get mqtt.custom.port", options);
+      if (!portResult.ok) return;
+      const host = parseReplyValue(hostResult.text);
+      const port = parseReplyValue(portResult.text) || "1883";
+      const input = document.getElementById("mqttCustomEndpoint");
+      if (input) {
+        input.value = host && host !== "-" ? `${host}:${port}` : "";
+      }
+    }
+    function parseCustomEndpoint(value) {
+      const endpoint = String(value || "").trim();
+      const separator = endpoint.lastIndexOf(":");
+      if (separator <= 0 || separator === endpoint.length - 1) return null;
+      const host = endpoint.slice(0, separator).trim();
+      const port = endpoint.slice(separator + 1).trim();
+      if (!host || !/^[0-9]+$/.test(port)) return null;
+      const portNumber = Number.parseInt(port, 10);
+      if (!Number.isFinite(portNumber) || portNumber < 1 || portNumber > 65535) return null;
+      return { host, port:String(portNumber) };
+    }
+    async function saveCustomEndpoint() {
+      const input = document.getElementById("mqttCustomEndpoint");
+      if (!input) return;
+      const parsed = parseCustomEndpoint(input.value);
+      if (!parsed) {
+        statusEl.textContent = "Use host:port, for example mqtt.xnet.wtf:1883";
+        return;
+      }
+      const hostResult = await runCommand("set mqtt.custom.host " + parsed.host);
+      if (!hostResult.ok) return;
+      const portResult = await runCommand("set mqtt.custom.port " + parsed.port);
+      if (!portResult.ok) return;
+      input.value = `${parsed.host}:${parsed.port}`;
     }
     async function loadRadioConfig(options = {}) {
       const result = await runCommand("get radio", options);
@@ -2669,6 +2696,8 @@ const char kWebPanelAppHtml[] PROGMEM = R"HTML(
 	        setCustomMqttMode((Number.parseInt(customMqttModeSlider.value, 10) || 0) >= 1);
 	      });
 	    }
+	    document.getElementById("refreshCustomEndpointBtn").onclick = () => loadCustomEndpoint();
+	    document.getElementById("saveCustomEndpointBtn").onclick = () => saveCustomEndpoint();
 	    async function setLetsmeshMode(mode) {
 	      const eastmesh = document.getElementById("mqttEastmeshAu");
 	      if (mode === "both" && eastmesh && eastmesh.checked) {
@@ -2859,8 +2888,7 @@ const char kWebPanelAppHtml[] PROGMEM = R"HTML(
           () => loadBrokerState("get mqtt.letsmesh-eu", "mqttLetsmeshEu", quiet),
           () => loadBrokerState("get mqtt.letsmesh-us", "mqttLetsmeshUs", quiet),
           () => loadBrokerState("get mqtt.custom", "mqttCustom", quiet),
-          () => loadField("get mqtt.custom.host", "mqttCustomHost", null, quiet),
-          () => loadField("get mqtt.custom.port", "mqttCustomPort", null, quiet),
+          () => loadCustomEndpoint(quiet),
           () => loadField("get mqtt.custom.username", "mqttCustomUsername", null, quiet)
         ]);
         if (!isCurrentPageLoad(generation)) return;
@@ -2966,7 +2994,7 @@ bool WebPanelServer::start() {
   return true;
 }
 
-void WebPanelServer::stop() {
+void WebPanelServer::stop(bool clear_session) {
   stopRedirectServer();
   if (_server != nullptr) {
     httpd_handle_t server = _server;
@@ -2974,8 +3002,10 @@ void WebPanelServer::stop() {
     WEB_PANEL_LOG("server stopped");
     httpd_ssl_stop(server);
   }
-  _token[0] = 0;
-  _last_activity_ms = 0;
+  if (clear_session) {
+    _token[0] = 0;
+    _last_activity_ms = 0;
+  }
 }
 
 bool WebPanelServer::isRunning() const {
@@ -3242,7 +3272,7 @@ bool WebPanelServer::start() {
   return false;
 }
 
-void WebPanelServer::stop() {
+void WebPanelServer::stop(bool) {
 }
 
 void WebPanelServer::stopRedirectServer() {

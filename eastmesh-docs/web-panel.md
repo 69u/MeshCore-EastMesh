@@ -108,7 +108,8 @@ Example:
 - the connection is HTTPS, but the certificate is self-signed
 - browsers will warn the first time you connect
 - the panel exposes the repeater CLI after login
-- the browser keeps the session token while changing between `/app` and `/stats`; the page switches views in place until logout, idle lock, or server restart
+- the browser keeps the session token while changing between `/app` and `/stats`; the page switches views in place until logout, idle lock, or device restart
+- brief Wi-Fi drops can interrupt in-flight page loads, but should not force a new login when the web panel restarts
 - after a device restart or reflash, the app checks the stored token before loading settings and returns to login if the session is stale
 
 This is intended for local admin use on a trusted network, not for open internet exposure.
@@ -248,7 +249,7 @@ This section includes:
 - `mqtt.owner`: owner public key.
 - `mqtt.email`: owner contact email.
 - MQTT server toggles: `eastmesh-au`, `letsmesh-eu`, `letsmesh-us`, and custom MQTT.
-- custom MQTT host, port, username, and password fields.
+- custom MQTT `host:port`, username, and password fields.
 
 `UNSET - To be configured` is the default for new observer installs until a real saved value exists.
 
