@@ -40,7 +40,7 @@ public:
 
   void setCommandRunner(WebPanelCommandRunner* runner);
   bool start();
-  void stop();
+  void stop(bool clear_session = true);
   void stopRedirectServer();
   bool isRunning() const;
   bool hasSessionToken() const;

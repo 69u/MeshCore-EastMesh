@@ -108,7 +108,8 @@ Example:
 - the connection is HTTPS, but the certificate is self-signed
 - browsers will warn the first time you connect
 - the panel exposes the repeater CLI after login
-- the browser keeps the session token while changing between `/app` and `/stats`; the page switches views in place until logout, idle lock, or server restart
+- the browser keeps the session token while changing between `/app` and `/stats`; the page switches views in place until logout, idle lock, or device restart
+- brief Wi-Fi drops can interrupt in-flight page loads, but should not force a new login when the web panel restarts
 - after a device restart or reflash, the app checks the stored token before loading settings and returns to login if the session is stale
 
 This is intended for local admin use on a trusted network, not for open internet exposure.
@@ -247,7 +248,8 @@ This section includes:
 - `mqtt.iata`: selected from a curated east-coast/south-east list.
 - `mqtt.owner`: owner public key.
 - `mqtt.email`: owner contact email.
-- MQTT server toggles: `eastmesh-au`, `letsmesh-eu`, and `letsmesh-us`.
+- MQTT server toggles: `eastmesh-au`, `letsmesh-eu`, `letsmesh-us`, and custom MQTT.
+- custom MQTT `host:port`, username, and password fields.
 
 `UNSET - To be configured` is the default for new observer installs until a real saved value exists.
 
@@ -257,9 +259,10 @@ Notes:
 - while `mqtt.iata` is `UNSET`, enabled MQTT brokers do not attempt to connect
 - the current MQTT server states are loaded when the page opens
 - you can toggle each MQTT server on or off from this panel
+- custom MQTT uses normal MQTT over TCP with the configured username and password, not JWT authentication
 - turning off a connected MQTT server publishes retained offline status before the client disconnects
 - changing `mqtt.iata` away from a configured value publishes retained offline status to the old status topic, restarts connected broker clients, and reconnects under the new topic path
-- if all three servers are enabled at once, the panel shows a warning recommending two at most
+- at most two MQTT brokers can be enabled at once
 
 ## `/stats` Overview
 
@@ -340,8 +343,11 @@ On mobile:
 
 1. Press `Start OTA`.
 2. Confirm the action.
-3. The local HTTP redirect listener on port `80` is released so OTA can take over that port.
-4. Continue with your normal OTA workflow.
+3. The panel starts OTA, then opens the returned `http://.../update` URL.
+4. The local HTTP redirect listener on port `80` is released so OTA can take over that port.
+5. Continue with your normal OTA workflow.
+
+If the repeater is already connected to Wi-Fi, OTA uses the existing LAN address. If Wi-Fi is not connected, the repeater starts the `MeshCore-OTA` access point and returns that OTA address instead.
 
 If an older build sends you through a strange redirect after `start ota`, use the web `Start OTA` button to begin the upgrade. This redirect issue is fixed in `observer-eastmesh-v1.3.11`.
 

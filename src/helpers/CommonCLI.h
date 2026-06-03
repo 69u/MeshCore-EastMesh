@@ -40,6 +40,7 @@ struct NodePrefs { // persisted to file
   uint8_t multi_acks;
   float bw;
   uint8_t flood_max;
+  uint8_t flood_max_unscoped;
   uint8_t interference_threshold;
   uint8_t agc_reset_interval; // secs / 4
   // Bridge settings
@@ -58,7 +59,6 @@ struct NodePrefs { // persisted to file
   uint32_t discovery_mod_timestamp;
   float adc_multiplier;
   char owner_info[120];
-  uint8_t reserved_290; // reserved to preserve on-disk prefs layout
   uint8_t rx_boosted_gain; // power settings
   uint8_t path_hash_mode;   // which path mode to use when sending
   uint8_t loop_detect;

@@ -760,7 +760,10 @@ void MyMesh::sendFloodReply(mesh::Packet* packet, unsigned long delay_millis, ui
 
 bool MyMesh::allowPacketForward(const mesh::Packet *packet) {
   if (_prefs.disable_fwd) return false;
-  if (packet->isRouteFlood() && packet->getPathHashCount() >= _prefs.flood_max) return false;
+  if (packet->isRouteFlood()) {
+    if (packet->getPathHashCount() >= _prefs.flood_max) return false;
+    if (packet->getRouteType() == ROUTE_TYPE_FLOOD && packet->getPathHashCount() >= _prefs.flood_max_unscoped) return false;
+  }
   if (packet->isRouteFlood() && recv_pkt_region == NULL) {
     MESH_DEBUG_PRINTLN("allowPacketForward: unknown transport code, or wildcard not allowed for FLOOD packet");
     return false;
@@ -974,7 +977,7 @@ void MyMesh::onAdvertRecv(mesh::Packet *packet, const mesh::Identity &id, uint32
   mesh::Mesh::onAdvertRecv(packet, id, timestamp, app_data, app_data_len); // chain to super impl
 
   // if this a zero hop advert (and not via 'Share'), add it to neighbours
-  if (packet->path_len == 0 && !isShare(packet)) {
+  if (packet->getPathHashCount() == 0 && !isShare(packet)) {
     AdvertDataParser parser(app_data, app_data_len);
     if (parser.isValid() && parser.getType() == ADV_TYPE_REPEATER) { // just keep neigbouring Repeaters
       putNeighbour(id, timestamp, packet->getSNR());
@@ -1235,8 +1238,9 @@ MyMesh::MyMesh(mesh::MainBoard &board, mesh::Radio &radio, mesh::MillisecondCloc
   _prefs.cr = LORA_CR;
   _prefs.tx_power_dbm = LORA_TX_POWER;
   _prefs.advert_interval = 1;        // default to 2 minutes for NEW installs
-  _prefs.flood_advert_interval = 12; // 12 hours
+  _prefs.flood_advert_interval = 47; // 47 hours
   _prefs.flood_max = 64;
+  _prefs.flood_max_unscoped = 64;
   _prefs.interference_threshold = 0; // disabled
 
   // bridge defaults
@@ -1254,7 +1258,6 @@ MyMesh::MyMesh(mesh::MainBoard &board, mesh::Radio &radio, mesh::MillisecondCloc
   _prefs.advert_loc_policy = ADVERT_LOC_PREFS;
 
   _prefs.adc_multiplier = 0.0f; // 0.0f means use default board multiplier
-  _prefs.reserved_290 = 0;
   _prefs.fan_mode = 0; // auto
   _prefs.fan_timeout_secs = 30;
 
@@ -2350,6 +2353,16 @@ void MyMesh::handleCommand(uint32_t sender_timestamp, char *command, char *reply
     sprintf(reply, "> %s", mqtt.isEndpointEnabled(0x02) ? "on" : "off");
   } else if (strcmp(command, "get mqtt.letsmesh-us") == 0 || strcmp(command, "get mqtt.letsmesh.us") == 0) {
     sprintf(reply, "> %s", mqtt.isEndpointEnabled(0x04) ? "on" : "off");
+  } else if (strcmp(command, "get mqtt.custom") == 0) {
+    sprintf(reply, "> %s", mqtt.isEndpointEnabled(0x08) ? "on" : "off");
+  } else if (strcmp(command, "get mqtt.custom.host") == 0) {
+    sprintf(reply, "> %s", mqtt.getCustomHost()[0] ? mqtt.getCustomHost() : "-");
+  } else if (strcmp(command, "get mqtt.custom.port") == 0) {
+    sprintf(reply, "> %u", static_cast<unsigned>(mqtt.getCustomPort()));
+  } else if (strcmp(command, "get mqtt.custom.username") == 0) {
+    sprintf(reply, "> %s", mqtt.getCustomUsername()[0] ? mqtt.getCustomUsername() : "-");
+  } else if (strcmp(command, "get mqtt.custom.password") == 0) {
+    sprintf(reply, "> %s", mqtt.hasCustomPassword() ? "set" : "-");
   } else if (memcmp(command, "set mqtt.tx ", 12) == 0) {
     mqtt.setTxEnabled(memcmp(&command[12], "on", 2) == 0);
     strcpy(reply, "OK");
@@ -2397,6 +2410,36 @@ void MyMesh::handleCommand(uint32_t sender_timestamp, char *command, char *reply
       strcpy(reply, "OK");
     } else {
       strcpy(reply, "Err - max 2 mqtt brokers");
+    }
+  } else if (memcmp(command, "set mqtt.custom ", 16) == 0) {
+    if (mqtt.setEndpointEnabled(0x08, memcmp(&command[16], "on", 2) == 0)) {
+      strcpy(reply, "OK");
+    } else {
+      strcpy(reply, "Err - max 2 mqtt brokers");
+    }
+  } else if (memcmp(command, "set mqtt.custom.host ", 21) == 0) {
+    if (mqtt.setCustomHost(&command[21])) {
+      strcpy(reply, "OK");
+    } else {
+      strcpy(reply, "Err - bad mqtt.custom.host");
+    }
+  } else if (memcmp(command, "set mqtt.custom.port ", 21) == 0) {
+    if (mqtt.setCustomPort(&command[21])) {
+      strcpy(reply, "OK");
+    } else {
+      strcpy(reply, "Err - bad mqtt.custom.port");
+    }
+  } else if (memcmp(command, "set mqtt.custom.username ", 25) == 0) {
+    if (mqtt.setCustomUsername(&command[25])) {
+      strcpy(reply, "OK");
+    } else {
+      strcpy(reply, "Err - bad mqtt.custom.username");
+    }
+  } else if (memcmp(command, "set mqtt.custom.password ", 25) == 0) {
+    if (mqtt.setCustomPassword(&command[25])) {
+      strcpy(reply, "OK");
+    } else {
+      strcpy(reply, "Err - bad mqtt.custom.password");
     }
 #endif
   } else{

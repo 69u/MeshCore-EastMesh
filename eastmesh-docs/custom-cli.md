@@ -68,12 +68,24 @@ No-argument `get` commands must be entered exactly as shown.
 - `set mqtt.letsmesh-eu on|off`
 - `get mqtt.letsmesh-us`
 - `set mqtt.letsmesh-us on|off`
+- `get mqtt.custom`
+- `set mqtt.custom on|off`
+- `get mqtt.custom.host`
+- `set mqtt.custom.host <host>`
+- `get mqtt.custom.port`
+- `set mqtt.custom.port <port>`
+- `get mqtt.custom.username`
+- `set mqtt.custom.username <username>`
+- `get mqtt.custom.password`: shows `set` when a custom password is configured.
+- `set mqtt.custom.password <password>`
 
 Notes:
 
 - new observer installs default `mqtt.iata` to `UNSET`
 - `letsmesh-eu` and `letsmesh-us` remain off by default unless already configured in saved prefs
-- if `mqtt.iata` is `UNSET`, `eastmesh-au`, `letsmesh-eu`, and `letsmesh-us` will not connect even if they are toggled on
+- if `mqtt.iata` is `UNSET`, enabled MQTT brokers will not connect
+- custom MQTT uses normal MQTT over TCP with the configured username and password, not JWT authentication
+- custom MQTT uses the same `meshcore/<IATA>/<device>/<leaf>` topics as the curated brokers
 - turning off a connected broker publishes a retained MQTT status update with `"status":"offline"` before the client disconnects
 - changing `mqtt.iata` away from a configured value also publishes retained offline status to the old status topic, restarts connected broker clients, and reconnects under the new topic path
 
@@ -143,6 +155,13 @@ OK
 
 > If `noise_floor` reports `0`, check `get agc.reset.interval`; if it is not `0`, try `set agc.reset.interval 0` and test again.
 
+### Flood Forwarding Limit
+
+- `get flood.max.unscoped`: shows the hop limit for unscoped flood packets.
+- `set flood.max.unscoped <0-64>`: sets the hop limit for unscoped flood packets.
+
+Observer builds default this value to `64`. Lower values can limit how far unscoped flood traffic is repeated while leaving scoped/region flood forwarding controlled by `flood.max`.
+
 ### Board Battery Reporting
 
 - On observer builds, background battery sampling used for MQTT/status history is rate-limited to about once per minute. Explicit status and telemetry requests still refresh the reading immediately.
@@ -182,6 +201,7 @@ Notes:
 - commands run with the same care as if you typed them into the repeater CLI directly
 - this is intended for local admin use on a trusted network
 - `start ota` releases the local HTTP redirect listener on port `80` so the OTA HTTP listener can take over without stopping the rest of the repeater services, regardless of whether the command is run from the web panel, serial CLI, or a remote companion/app CLI session
+- `start ota` uses the repeater's existing Wi-Fi address when already connected, or starts the `MeshCore-OTA` access point when Wi-Fi is not connected
 - the `/app` Regions shortcut runs the existing MeshCore region commands in sequence: `region put au`, `region put au-STATE`, `region allowf au`, `region allowf au-STATE`, then `region save`
 
 ## Companion Wi-Fi Rescue Commands

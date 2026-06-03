@@ -104,8 +104,12 @@ void WebService::ensureWebServer() {
     }
     return;
   }
-  if (_runner == nullptr || _prefs.web_enabled == 0 || _network == nullptr || !_network->isWifiConnected()) {
+  if (_runner == nullptr || _prefs.web_enabled == 0) {
     _panel.stop();
+    return;
+  }
+  if (_network == nullptr || !_network->isWifiConnected()) {
+    _panel.stop(false);
     return;
   }
   if (_panel.isRunning()) {
