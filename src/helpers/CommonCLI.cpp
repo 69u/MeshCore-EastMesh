@@ -48,6 +48,7 @@ void CommonCLI::loadPrefsInt(FILESYSTEM* fs, const char* filename) {
 
     file.read((uint8_t *)&_prefs->airtime_factor, sizeof(_prefs->airtime_factor));    // 0
     file.read((uint8_t *)&_prefs->node_name, sizeof(_prefs->node_name));              // 4
+    _prefs->node_name[sizeof(_prefs->node_name) - 1] = 0;
     file.read(pad, 4);                                                                // 36
     file.read((uint8_t *)&_prefs->node_lat, sizeof(_prefs->node_lat));                // 40
     file.read((uint8_t *)&_prefs->node_lon, sizeof(_prefs->node_lon));                // 48

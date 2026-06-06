@@ -74,11 +74,26 @@ void UITask::renderCurrScreen() {
     _display->setCursor((_display->width() - typeWidth) / 2, 48);
     _display->print(node_type);
   } else {  // home screen
-    // node name
+    // node name — filter non-ASCII before cp437 print (stale SPIFFS prefs can hold garbage)
+    char filtered_name[sizeof(_node_prefs->node_name)];
+    bool has_printable = false;
+    for (const char* p = _node_prefs->node_name; *p; p++) {
+      unsigned char c = (unsigned char)*p;
+      if (c >= 32 && c <= 126) {
+        has_printable = true;
+        break;
+      }
+    }
+    if (has_printable) {
+      _display->translateUTF8ToBlocks(filtered_name, _node_prefs->node_name, sizeof(filtered_name));
+    } else {
+      strncpy(filtered_name, "Repeater", sizeof(filtered_name));
+      filtered_name[sizeof(filtered_name) - 1] = 0;
+    }
     _display->setCursor(0, 0);
     _display->setTextSize(1);
     _display->setColor(DisplayDriver::GREEN);
-    _display->print(_node_prefs->node_name);
+    _display->print(filtered_name);
 
     // freq / sf
     _display->setCursor(0, 20);
