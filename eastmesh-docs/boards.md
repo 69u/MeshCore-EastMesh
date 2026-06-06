@@ -34,7 +34,7 @@ Other notes:
 - if you do want an onboard screen people will actually use, prefer TFT boards
 - if you want a low-power status screen, prefer e-paper boards
 - if location-aware or mobile use matters, prefer GPS-capable boards such as the T-Beam family, `heltec_tracker_v2`, `Heltec_v3`, `heltec_v4`, or `ThinkNode_M5`
-- if you want the most conservative, older radio family choices, the `SX1276` boards are `LilyGo_TLora_V2_1_1_6`, `Tbeam_SX1276`, and `Heltec_v2`
+- if you want the most conservative, older radio family choices, the `SX1276` boards are `LilyGo_LoRa32_T3_V161`, `LilyGo_TLora_V2_1_1_6`, `Tbeam_SX1276`, and `Heltec_v2`
 
 ## About The Tables
 
@@ -85,6 +85,7 @@ If you are deciding between otherwise similar boards, these target-level setting
 | LilyGo_TBeam_1W          | default | 22 dBm cfg\* | custom 2S | PA/FEM    |
 | LilyGo_TDeck             | default | 22 dBm cfg   | ADC batt  |           |
 | LilyGo_Tlora_C6          | default | 22 dBm cfg   | none      | RF switch |
+| LilyGo_LoRa32_T3_V161    | default | 20 dBm cfg   | ADC batt  |           |
 | LilyGo_TLora_V2_1_1_6    | default | 20 dBm cfg   | ADC batt  |           |
 | M5Stack_Unit_C6L         | default | 22 dBm cfg   | none      | RF switch |
 | Meshadventurer_sx1262    | default | 22 dBm cfg   | ADC batt  | RF switch |
@@ -125,6 +126,7 @@ This table includes all observer targets currently defined in `variants/eastmesh
 | Heltec_Wireless_Paper    | ESP32S3 | 512 KB | No    | 8 MB  | SX1262 | E-paper (2.13") |     |     |
 | Heltec_Wireless_Tracker  | ESP32S3 | 512 KB | No    | 8 MB  | SX1262 | TFT (ST7735)    | ✅  |     |
 | Heltec_WSL3              | ESP32S3 | 512 KB | No    | 8 MB  | SX1262 | None            | ✅  |     |
+| LilyGo_LoRa32_T3_V161    | ESP32   | 520 KB | No    | 4 MB  | SX1276 | OLED (SSD1306)  |     | 🧪  |
 | LilyGo_T3S3_sx1262       | ESP32S3 | 512 KB | 2 MB  | 4 MB  | SX1262 | OLED (SSD1306)  |     | 🧪  |
 | LilyGo_T3S3_sx1276       | ESP32S3 | 512 KB | 2 MB  | 4 MB  | SX1276 | OLED (SSD1306)  |     | 🧪  |
 | LilyGo_TBeam_1W          | ESP32S3 | 512 KB | 8 MB  | 16 MB | SX1262 | OLED (SH1106)   | ✅  | ✅  |

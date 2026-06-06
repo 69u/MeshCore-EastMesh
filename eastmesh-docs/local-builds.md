@@ -26,6 +26,7 @@ Plain PlatformIO build for a single target:
 
 ```bash
 uv run pio run -e heltec_v4_repeater_observer
+uv run pio run -e LilyGo_LoRa32_T3_V161_repeater_observer
 uv run pio run -e heltec_v4_companion_radio_wifi
 uv run pio run -e heltec_v4_repeater_bridge_espnow
 uv run pio run -e heltec_v4_repeater_observer_espnow
@@ -157,6 +158,7 @@ heltec_v4_companion_radio_wifi
 heltec_v4_tft_companion_radio_wifi
 Heltec_WSL3_companion_radio_wifi
 LilyGo_TBeam_1W_companion_radio_wifi
+LilyGo_LoRa32_T3_V161_companion_radio_wifi
 LilyGo_TLora_V2_1_1_6_companion_radio_wifi
 nibble_screen_connect_companion_radio_wifi
 RAK_3112_companion_radio_wifi
